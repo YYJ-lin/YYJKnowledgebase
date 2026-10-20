@@ -88,6 +88,13 @@ Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：�
 
 行高亮 `{2,4}` 目前不支持，写了不报错也不生效。
 
+## 自检
+
+```bash
+./tools/verify.sh                                   # 构建产物不变量（标题/字体/页脚/渲染/索引）
+python3 tools/check_links.py                        # 线上站内链接全量体检（也可传本地预览地址）
+```
+
 ## 自定义页脚
 
 内置页脚只接受写死的 href，站内链接在 `/YYJKnowledgebase/` 子路径下会 404，所以换成了本地插件 `plugins/yyj-footer/`：

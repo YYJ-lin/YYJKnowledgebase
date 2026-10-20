@@ -58,6 +58,9 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 5. **正文不要再写 `#` 一级标题**：页面 h1 由 front matter `title` 生成，否则出现两个大标题。
 6. **`{2,4}` 行高亮**：Quartz 不支持，写了不报错也不生效。
 7. **背景进程**：ssh 命令结束后 `nohup ... &` 会被回收，长期预览要用 systemd 用户服务。
+8. **wiki 链接按文件名/路径写**：`[[写作指南]]`（页面标题）会变成死链，必须写 `[[writing-guide]]` 或 `[[about/writing-guide|写作指南]]`。
+9. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
+10. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
 
 ## 六、日常发布
 
@@ -82,7 +85,8 @@ git add . && git commit -m "写一篇新文章" && git push
 
 ## 七、已知遗留
 
-- KaTeX 的 CSS 仍从 `cdn.jsdelivr.net` 加载（插件写死），国内可能偏慢；目前只在有公式时才有字体请求。要彻底去掉需给 latex 插件打补丁或换渲染器。
+- （已解决）公式改用 MathJax 服务端 SVG，产物里已无 KaTeX/jsdelivr 引用
+- Mermaid 仍从 cdnjs 懒加载（插件写死），国内可能偏慢；目前只在有公式时才有字体请求。要彻底去掉需给 latex 插件打补丁或换渲染器。
 - 页脚在桌面端位于中间栏网格内（宽度约 930px），未做成通栏；如需通栏要改 Quartz 的 grid 布局。
 - 站点还没有自定义域名，`baseUrl` 目前是 `yyj-lin.github.io/YYJKnowledgebase`。
 
