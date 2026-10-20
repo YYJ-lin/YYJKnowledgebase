@@ -2,7 +2,7 @@
 
 用 [Quartz 5](https://quartz.jzhao.xyz) 搭建的「云屿集」站点：内容就是 `content/` 里的 Markdown，用 Obsidian 直接打开这个目录即可写作。
 
-- 线上（规划）：https://yyj-lin.github.io/YYJKnowledgebase/
+- 线上：https://yyj-lin.github.io/YYJKnowledgebase/
 - 本地预览：http://192.168.1.102:8095/YYJKnowledgebase/（模拟 GitHub Pages 子路径）
 - 旧站（Docusaurus）：`~/sites/my-website`，仓库 `YYJ-wiki`，保持不动，随时可回滚
 
@@ -63,13 +63,15 @@ npx quartz build --serve --wsPort 3011   # http://localhost:8080，只监听本�
 
 ## 部署
 
-仓库：`git@github.com:YYJ-lin/YYJKnowledgebase.git`（需先在 GitHub 建空仓库）
+仓库：`git@github.com:YYJ-lin/YYJKnowledgebase.git`（GitHub Pages 已启用，日常只需 `git push`）
 
-首次部署：
+上线已经完成，Pages 的 Source 已设为 **GitHub Actions**。日常发布就是：
 
-1. GitHub 仓库 → Settings → Pages → Source 选 **GitHub Actions**；
-2. 本地 `git push origin v5`；
-3. Actions 跑完即上线 `https://yyj-lin.github.io/YYJKnowledgebase/`。
+```bash
+git add . && git commit -m "写一篇新文章" && git push
+```
+
+Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：仓库 Actions 页 → 选最近一次 run → Re-run all jobs。
 
 域名或仓库名变了，只改一处：`quartz.config.yaml` 里的 `baseUrl`（形如 `用户名.github.io/仓库名`，不带 `https://`）。
 
@@ -98,6 +100,6 @@ npx quartz build --serve --wsPort 3011   # http://localhost:8080，只监听本�
 ## 已知待办
 
 - [x] 页脚四区（内容导航 / 相关资源 / 关于与反馈 / 品牌）—— 已用本地插件实现
-- [ ] 首次 push 到 `git@github.com:YYJ-lin/YYJKnowledgebase.git`（需先在 GitHub 建空仓库），并把 Pages Source 设为 GitHub Actions
+- [x] 首次 push 到 `git@github.com:YYJ-lin/YYJKnowledgebase.git`，Pages Source 设为 GitHub Actions —— 已上线
 - [ ] 旧站 `~/sites/my-website` 与后台编辑器 `yyj-editor` 的退役（等新站验证稳定后再决定）
 - [ ] 评论（Giscus）、访问统计（可选，需要时再开）

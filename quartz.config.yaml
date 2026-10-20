@@ -228,11 +228,11 @@ plugins:
           items:
             - { label: 写作指南, to: /about/writing-guide }
             - { label: 组件演示, to: /about/components }
-            - { label: GitHub 仓库, href: "https://github.com/YYJ-lin/YYJ-wiki" }
+            - { label: GitHub 仓库, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
         - title: 关于与反馈
           items:
             - { label: 关于本站, to: /about/ }
-            - { label: 反馈与联系, href: "https://github.com/YYJ-lin/YYJ-wiki/issues" }
+            - { label: 反馈与联系, href: "https://github.com/YYJ-lin/YYJKnowledgebase/issues" }
       brand:
         title: 云屿集
         tagline: 业务分享与行业知识

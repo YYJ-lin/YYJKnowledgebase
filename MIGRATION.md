@@ -1,6 +1,6 @@
 # 云屿集 · 从 Docusaurus 迁移到 Quartz（交接文档）
 
-> 新会话从这里接着做，不依赖对话记忆。最后更新：2026-10-20。
+> 新会话从这里接着做，不依赖对话记忆。最后更新：2026-10-20（已上线）。
 
 ## 一、目标
 
@@ -22,14 +22,14 @@
 | 主题定制 | ✅ 760px 版心、首页 Hero + 三卡、四区页脚、暗色模式 |
 | 构建验证 | ✅ 本地构建 + `git archive` 干净检出构建均通过（78 文件） |
 | 本地预览 | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/YYJKnowledgebase/` 子路径） |
-| 部署 | 🟡 工作流与脚本已就绪，**等 GitHub 仓库创建后首次 push** |
+| 部署 | ✅ 已上线 https://yyj-lin.github.io/YYJKnowledgebase/（Actions 自动构建 + Pages） |
 
 ## 三、环境事实
 
 - 工作机：Ubuntu 24.04，Node v22.20.0（`~/.local/node/bin`），npm 10.9.3
 - **GitHub HTTPS 超时，SSH 正常**（`ssh -T git@github.com` 返回 `Hi YYJ-lin!`）
 - 拉开源代码用 Gitee 镜像：`https://gitee.com/linxiansheng0409/quartz`（已设为 `upstream`）
-- 新仓库 remote：`origin` → `git@github.com:YYJ-lin/YYJKnowledgebase.git`（**仓库尚未创建**）
+- 新仓库 remote：`origin` → `git@github.com:YYJ-lin/YYJKnowledgebase.git`（已建、已推、Pages 已启用）
 - 旧站：`~/sites/my-website`（Docusaurus，仓库 `YYJ-wiki`），后台编辑器 `yyj-editor`（3002），**全程未改动**
 - 端口占用：3000 / 3001 被旧后台占用，所以 `quartz build --serve` 要加 `--wsPort 3011`
 - 本地预览：`http://192.168.1.102:8095/yyj-quartz/`（systemd 用户服务 `yyj-quartz-preview`）
@@ -59,22 +59,26 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 6. **`{2,4}` 行高亮**：Quartz 不支持，写了不报错也不生效。
 7. **背景进程**：ssh 命令结束后 `nohup ... &` 会被回收，长期预览要用 systemd 用户服务。
 
-## 六、下一步（按顺序）
+## 六、日常发布
 
-1. **建 GitHub 空仓库** `YYJ-lin/YYJKnowledgebase`（不勾 README / .gitignore / license）
-2. `./tools/deploy.sh`（或 `git push -u origin v5`）
-3. 仓库 Settings → Pages → Source 选 **GitHub Actions**
-4. 等 Actions 跑完，验收 `https://yyj-lin.github.io/YYJKnowledgebase/`
-5. 验收 checklist：
-   - [ ] 首页 Hero、三卡样式正常，卡片可点
-   - [ ] 侧栏顺序：业务分享 / 行业知识 / 工具资源 / 关于云屿集 / 博客
-   - [ ] 字体是 IBM Plex Sans（不是系统默认），Network 里无 Google Fonts 请求
-   - [ ] 组件演示页 callout、mermaid、数学公式、脚注、wiki 链接正常
-   - [ ] 搜索能搜到「写作」
-   - [ ] 暗色模式切换正常
-   - [ ] 页脚四区链接全部可达（无 404）
-   - [ ] 404 页面中文
-6. 验收通过后再决定：旧站退役、评论（Giscus）、访问统计
+```bash
+cd ~/sites/yyj-quartz
+# 写内容：用 Obsidian 打开 content/，或直接改 md
+git add . && git commit -m "写一篇新文章" && git push
+```
+
+约 1–2 分钟后线上自动更新。排查构建失败：仓库 Actions 页面看那一次 run 的日志。
+
+验收 checklist（上线时已全部通过，改版后再跑一遍）：
+
+- [x] 首页 Hero、三卡样式正常，卡片可点
+- [x] 侧栏顺序：业务分享 / 行业知识 / 工具资源 / 关于云屿集 / 博客
+- [x] 字体是 IBM Plex Sans（Network 里无 Google Fonts 请求）
+- [x] 组件演示页 callout、mermaid、数学公式（MathJax）、脚注、wiki 链接正常
+- [x] 搜索能搜到「写作」
+- [x] 暗色模式切换正常
+- [x] 页脚四区链接全部可达（无 404）
+- [x] 404 页面中文
 
 ## 七、已知遗留
 
