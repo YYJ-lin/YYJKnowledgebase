@@ -10,12 +10,12 @@ echo "==> 构建"
 npx quartz build "$@"
 
 echo "==> 同步到 /tmp/preview"
-rm -rf /tmp/preview/YYJKnowledge-base.new
-cp -r public /tmp/preview/YYJKnowledge-base.new
-rm -rf /tmp/preview/YYJKnowledge-base
-mv /tmp/preview/YYJKnowledge-base.new /tmp/preview/YYJKnowledge-base
+rm -rf /tmp/preview/YYJKnowledgebase.new
+cp -r public /tmp/preview/YYJKnowledgebase.new
+rm -rf /tmp/preview/YYJKnowledgebase
+mv /tmp/preview/YYJKnowledgebase.new /tmp/preview/YYJKnowledgebase
 
 echo "==> 重启预览服务"
 systemctl --user restart yyj-quartz-preview
 
-echo "预览地址: http://192.168.1.102:8095/YYJKnowledge-base/"
+echo "预览地址: http://192.168.1.102:8095/YYJKnowledgebase/"

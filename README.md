@@ -2,8 +2,8 @@
 
 用 [Quartz 5](https://quartz.jzhao.xyz) 搭建的「云屿集」站点：内容就是 `content/` 里的 Markdown，用 Obsidian 直接打开这个目录即可写作。
 
-- 线上（规划）：https://yyj-lin.github.io/YYJKnowledge-base/
-- 本地预览：http://192.168.1.102:8095/YYJKnowledge-base/（模拟 GitHub Pages 子路径）
+- 线上（规划）：https://yyj-lin.github.io/YYJKnowledgebase/
+- 本地预览：http://192.168.1.102:8095/YYJKnowledgebase/（模拟 GitHub Pages 子路径）
 - 旧站（Docusaurus）：`~/sites/my-website`，仓库 `YYJ-wiki`，保持不动，随时可回滚
 
 ## 目录结构
@@ -51,7 +51,7 @@ systemctl --user restart yyj-quartz-preview
 journalctl --user -u yyj-quartz-preview -n 50
 ```
 
-预览地址 `http://192.168.1.102:8095/YYJKnowledge-base/`，故意挂在 `/YYJKnowledge-base/` 子路径下，用来验证 GitHub Pages 项目页的路径是否正确。
+预览地址 `http://192.168.1.102:8095/YYJKnowledgebase/`，故意挂在 `/YYJKnowledgebase/` 子路径下，用来验证 GitHub Pages 项目页的路径是否正确。
 
 也可以直接用 Quartz 自带的热更新服务器：
 
@@ -63,13 +63,13 @@ npx quartz build --serve --wsPort 3011   # http://localhost:8080，只监听本�
 
 ## 部署
 
-仓库：`git@github.com:YYJ-lin/YYJKnowledge-base.git`（需先在 GitHub 建空仓库）
+仓库：`git@github.com:YYJ-lin/YYJKnowledgebase.git`（需先在 GitHub 建空仓库）
 
 首次部署：
 
 1. GitHub 仓库 → Settings → Pages → Source 选 **GitHub Actions**；
 2. 本地 `git push origin v5`；
-3. Actions 跑完即上线 `https://yyj-lin.github.io/YYJKnowledge-base/`。
+3. Actions 跑完即上线 `https://yyj-lin.github.io/YYJKnowledgebase/`。
 
 域名或仓库名变了，只改一处：`quartz.config.yaml` 里的 `baseUrl`（形如 `用户名.github.io/仓库名`，不带 `https://`）。
 
@@ -88,16 +88,16 @@ npx quartz build --serve --wsPort 3011   # http://localhost:8080，只监听本�
 
 ## 自定义页脚
 
-内置页脚只接受写死的 href，站内链接在 `/YYJKnowledge-base/` 子路径下会 404，所以换成了本地插件 `plugins/yyj-footer/`：
+内置页脚只接受写死的 href，站内链接在 `/YYJKnowledgebase/` 子路径下会 404，所以换成了本地插件 `plugins/yyj-footer/`：
 
 - 组件在 `plugins/yyj-footer/index.js`（纯 Preact，无需编译），`package.json` 里的 `quartz` 字段是 Quartz 的插件清单；
-- 链接由 `cfg.baseUrl` 推导站点根（`/YYJKnowledge-base`），域名根和子路径部署都成立；
+- 链接由 `cfg.baseUrl` 推导站点根（`/YYJKnowledgebase`），域名根和子路径部署都成立；
 - 四区内容和文案在 `quartz.config.yaml` 里该插件的 `options` 段配置，改文案不用动代码；
 - 样式在 `quartz/styles/custom.scss` 的「页脚」一节。
 
 ## 已知待办
 
 - [x] 页脚四区（内容导航 / 相关资源 / 关于与反馈 / 品牌）—— 已用本地插件实现
-- [ ] 首次 push 到 `git@github.com:YYJ-lin/YYJKnowledge-base.git`（需先在 GitHub 建空仓库），并把 Pages Source 设为 GitHub Actions
+- [ ] 首次 push 到 `git@github.com:YYJ-lin/YYJKnowledgebase.git`（需先在 GitHub 建空仓库），并把 Pages Source 设为 GitHub Actions
 - [ ] 旧站 `~/sites/my-website` 与后台编辑器 `yyj-editor` 的退役（等新站验证稳定后再决定）
 - [ ] 评论（Giscus）、访问统计（可选，需要时再开）

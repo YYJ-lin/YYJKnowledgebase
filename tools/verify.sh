@@ -33,7 +33,7 @@ if grep -q "yyj-footer-grid" "$PUB/index.html" && grep -q "yyj-footer-grid" "$PU
 else
   bad "页脚组件缺失"
 fi
-if grep -o 'href="/[^"]*"' "$PUB/index.html" | grep -qv '^href="/YYJKnowledge-base'; then
+if grep -o 'href="/[^"]*"' "$PUB/index.html" | grep -qv '^href="/YYJKnowledgebase'; then
   bad "存在未带 baseUrl 前缀的站内绝对链接"
 else
   ok "站内绝对链接均带 baseUrl 前缀"
@@ -48,7 +48,7 @@ grep -q 'yyj-footer-brand' "$PUB/index.html" && ok "页脚品牌区存在" || ba
 echo "== 索引 =="
 size=$(stat -c%s "$PUB/static/contentIndex.json" 2>/dev/null || echo 0)
 [ "$size" -gt 3000 ] && ok "搜索索引 $size 字节" || bad "搜索索引异常（$size）"
-grep -q "yyj-lin.github.io/YYJKnowledge-base" "$PUB/sitemap.xml" && ok "sitemap 指向正确 baseUrl" || bad "sitemap baseUrl 不对"
+grep -q "yyj-lin.github.io/YYJKnowledgebase" "$PUB/sitemap.xml" && ok "sitemap 指向正确 baseUrl" || bad "sitemap baseUrl 不对"
 [ ! -e "$PUB/CNAME" ] && ok "无多余 CNAME 文件" || bad "存在 CNAME（会顶掉 GitHub Pages 域名）"
 
 echo
