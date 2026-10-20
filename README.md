@@ -57,7 +57,8 @@ journalctl --user -u yyj-quartz-preview -n 50
 
 ```bash
 export PATH=$HOME/.local/node/bin:$PATH
-npx quartz build --serve          # http://localhost:8080
+npx quartz build --serve --wsPort 3011   # http://localhost:8080，只监听本机
+# 3000/3001 被旧后台编辑器占用，所以显式指定 WebSocket 端口；只在本机看就用这个
 ```
 
 ## 部署
