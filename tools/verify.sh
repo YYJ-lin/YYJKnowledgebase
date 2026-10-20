@@ -42,7 +42,7 @@ fi
 echo "== 内容渲染 =="
 grep -q 'data-callout="tip"' "$PUB/about/components.html" && ok "callout 渲染正常" || bad "callout 未渲染"
 grep -q 'class="mermaid"' "$PUB/about/components.html" && ok "mermaid 代码块已标记（浏览器端渲染）" || bad "mermaid 代码块缺失"
-grep -q 'class="katex"' "$PUB/about/components.html" && ok "KaTeX 公式渲染" || bad "KaTeX 未渲染"
+grep -q 'mjx-container' "$PUB/about/components.html" && ok "公式渲染（MathJax SVG）" || bad "公式未渲染"
 grep -q 'yyj-footer-brand' "$PUB/index.html" && ok "页脚品牌区存在" || bad "页脚品牌区缺失"
 
 echo "== 索引 =="
