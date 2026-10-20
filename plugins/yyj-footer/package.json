@@ -1,0 +1,33 @@
+{
+  "name": "@yyj/footer",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "云屿集自定义页脚：四区布局 + 子路径安全的站内链接",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components": "./index.js"
+  },
+  "quartz": {
+    "name": "yyj-footer",
+    "displayName": "云屿集页脚",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "components": {
+      "Footer": {
+        "displayName": "云屿集页脚",
+        "defaultPosition": "footer",
+        "defaultPriority": 50
+      }
+    },
+    "optionSchema": {
+      "columns": { "type": "array" },
+      "brand": { "type": "object" }
+    }
+  }
+}

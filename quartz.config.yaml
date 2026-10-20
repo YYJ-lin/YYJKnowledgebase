@@ -213,12 +213,29 @@ plugins:
     layout:
       position: afterBody
       priority: 10
-  - source: "@quartz-community/footer"
+  - source: "./plugins/yyj-footer"
     enabled: true
     options:
-      links:
-        GitHub: https://github.com/YYJ-lin
-        反馈与联系: https://github.com/YYJ-lin/YYJ-wiki/issues
+      columns:
+        - title: 内容导航
+          items:
+            - { label: 首页, to: / }
+            - { label: 业务分享, to: /business/ }
+            - { label: 行业知识, to: /industry/ }
+            - { label: 工具资源, to: /tools/ }
+            - { label: 博客, to: /blog/ }
+        - title: 相关资源
+          items:
+            - { label: 写作指南, to: /about/writing-guide }
+            - { label: 组件演示, to: /about/components }
+            - { label: GitHub 仓库, href: "https://github.com/YYJ-lin/YYJ-wiki" }
+        - title: 关于与反馈
+          items:
+            - { label: 关于本站, to: /about/ }
+            - { label: 反馈与联系, href: "https://github.com/YYJ-lin/YYJ-wiki/issues" }
+      brand:
+        title: 云屿集
+        tagline: 业务分享与行业知识
     layout:
       position: footer
       priority: 50
