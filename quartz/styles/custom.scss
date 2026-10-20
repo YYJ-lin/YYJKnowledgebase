@@ -1,3 +1,257 @@
 @use "./variables.scss" as *;
 
-// put your custom CSS here!
+// =========================================================
+// 云屿集 · 自定义样式
+// 品牌：Swiss Modernism + 「知识蓝」 #3b5bdb
+// 字体：自托管 IBM Plex Sans / JetBrains Mono（latin 子集），
+//       CJK 回退系统中文字体
+// 注意：CSS 产物位于站点根目录，所以字体用相对路径 static/fonts/…
+//       这样部署在域名根或 /yyj-quartz/ 子路径下都能加载
+// =========================================================
+
+// ---------- 字体 ----------
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("static/fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("static/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("static/fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("static/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("static/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2");
+}
+
+// ---------- 设计 token ----------
+:root {
+  --headerFont: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", system-ui, sans-serif;
+  --bodyFont: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", system-ui, sans-serif;
+  --codeFont: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+  --titleFont: var(--headerFont);
+
+  --yyj-content-width: 760px;
+  --yyj-brand: #3b5bdb;
+  --yyj-brand-strong: #1d4ed8;
+  --yyj-brand-soft: #eff6ff;
+  --yyj-line: #e4e4e7;
+  --yyj-muted: #6b6b73;
+}
+
+[saved-theme="dark"] {
+  --yyj-brand: #60a5fa;
+  --yyj-brand-strong: #93c5fd;
+  --yyj-brand-soft: #1e293b;
+  --yyj-line: #27272a;
+  --yyj-muted: #a1a1aa;
+}
+
+// ---------- 版心与正文 ----------
+.center {
+  width: 100%;
+}
+
+.center > article {
+  max-width: var(--yyj-content-width);
+  margin: 0 auto;
+}
+
+article {
+  h1 {
+    font-size: 2rem;
+    letter-spacing: -0.015em;
+    color: var(--dark);
+  }
+  h2 {
+    margin-top: 2.4rem;
+    letter-spacing: -0.01em;
+    color: var(--dark);
+  }
+  h3,
+  h4 {
+    color: var(--dark);
+  }
+  p,
+  li {
+    line-height: 1.8;
+  }
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  // 表格更紧凑
+  table {
+    font-size: 0.94rem;
+  }
+}
+
+// ---------- 首页 Hero ----------
+.hero {
+  padding: 1rem 0 2.5rem;
+  border-bottom: 1px solid var(--yyj-line);
+  margin-bottom: 2.5rem;
+}
+
+.hero-overline {
+  margin: 0 0 0.7rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--yyj-brand);
+}
+
+.hero-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--dark);
+}
+
+.hero-sub {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--darkgray);
+}
+
+// ---------- 首页卡片 ----------
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 0 2.5rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.2rem 1.25rem 1.1rem;
+  border: 1px solid var(--yyj-line);
+  border-radius: 10px;
+  background: var(--light);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+
+  .card-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .card-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--darkgray);
+  }
+
+  &:hover {
+    border-color: var(--yyj-brand);
+    box-shadow: 0 6px 20px rgba(59, 91, 219, 0.09);
+    transform: translateY(-2px);
+  }
+}
+
+.card-kicker {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--yyj-muted);
+}
+
+.card-more {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--yyj-brand);
+}
+
+@media all and ($mobile) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ---------- 顶栏 ----------
+.page-title a {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+// ---------- 侧栏 ----------
+.explorer .folder-title {
+  font-weight: 500;
+}
+
+// ---------- 页脚 ----------
+footer {
+  border-top: 1px solid var(--yyj-line);
+  padding-top: 1.5rem;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem 1.1rem;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    font-size: 0.9rem;
+    color: var(--yyj-muted);
+
+    &:hover {
+      color: var(--yyj-brand);
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--yyj-muted);
+  }
+}
+
+// ---------- 代码 ----------
+pre > code {
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
