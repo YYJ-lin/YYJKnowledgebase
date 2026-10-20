@@ -180,11 +180,14 @@ graph TD
 Obsidian 的双向链接语法，指向别的笔记，文件名改了也不会断：
 
 ```md
-[[写作指南]]
-[[写作指南|显示成别的文字]]
+[[writing-guide]]
+[[about/writing-guide|显示成别的文字]]
 ```
 
 跨目录也可以：`[[business/2026-q1-retro]]`。普通相对链接 `[文字](../about/)` 同样可用，两种混着写没问题。
+
+> [!warning] 按文件名或路径写，不要按标题写
+> 笔记叫 `writing-guide.md`，就要写 `[[writing-guide]]` 或 `[[about/writing-guide]]`；写 `[[写作指南]]`（页面标题）会变成死链。
 
 ## 十二、图片
 
