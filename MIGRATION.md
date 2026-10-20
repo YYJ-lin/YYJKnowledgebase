@@ -21,7 +21,7 @@
 | 字体 | ✅ 自托管 IBM Plex Sans + JetBrains Mono（不走 Google CDN） |
 | 主题定制 | ✅ 760px 版心、首页 Hero + 三卡、四区页脚、暗色模式 |
 | 构建验证 | ✅ 本地构建 + `git archive` 干净检出构建均通过（78 文件） |
-| 本地预览 | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/yyj-quartz/` 子路径） |
+| 本地预览 | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/YYJKnowledge-base/` 子路径） |
 | 部署 | 🟡 工作流与脚本已就绪，**等 GitHub 仓库创建后首次 push** |
 
 ## 三、环境事实
@@ -29,7 +29,7 @@
 - 工作机：Ubuntu 24.04，Node v22.20.0（`~/.local/node/bin`），npm 10.9.3
 - **GitHub HTTPS 超时，SSH 正常**（`ssh -T git@github.com` 返回 `Hi YYJ-lin!`）
 - 拉开源代码用 Gitee 镜像：`https://gitee.com/linxiansheng0409/quartz`（已设为 `upstream`）
-- 新仓库 remote：`origin` → `git@github.com:YYJ-lin/yyj-quartz.git`（**仓库尚未创建**）
+- 新仓库 remote：`origin` → `git@github.com:YYJ-lin/YYJKnowledge-base.git`（**仓库尚未创建**）
 - 旧站：`~/sites/my-website`（Docusaurus，仓库 `YYJ-wiki`），后台编辑器 `yyj-editor`（3002），**全程未改动**
 - 端口占用：3000 / 3001 被旧后台占用，所以 `quartz build --serve` 要加 `--wsPort 3011`
 - 本地预览：`http://192.168.1.102:8095/yyj-quartz/`（systemd 用户服务 `yyj-quartz-preview`）
@@ -61,10 +61,10 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 
 ## 六、下一步（按顺序）
 
-1. **建 GitHub 空仓库** `YYJ-lin/yyj-quartz`（不勾 README / .gitignore / license）
+1. **建 GitHub 空仓库** `YYJ-lin/YYJKnowledge-base`（不勾 README / .gitignore / license）
 2. `./tools/deploy.sh`（或 `git push -u origin v5`）
 3. 仓库 Settings → Pages → Source 选 **GitHub Actions**
-4. 等 Actions 跑完，验收 `https://yyj-lin.github.io/yyj-quartz/`
+4. 等 Actions 跑完，验收 `https://yyj-lin.github.io/YYJKnowledge-base/`
 5. 验收 checklist：
    - [ ] 首页 Hero、三卡样式正常，卡片可点
    - [ ] 侧栏顺序：业务分享 / 行业知识 / 工具资源 / 关于云屿集 / 博客
@@ -80,7 +80,7 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 
 - KaTeX 的 CSS 仍从 `cdn.jsdelivr.net` 加载（插件写死），国内可能偏慢；目前只在有公式时才有字体请求。要彻底去掉需给 latex 插件打补丁或换渲染器。
 - 页脚在桌面端位于中间栏网格内（宽度约 930px），未做成通栏；如需通栏要改 Quartz 的 grid 布局。
-- 站点还没有自定义域名，`baseUrl` 目前是 `yyj-lin.github.io/yyj-quartz`。
+- 站点还没有自定义域名，`baseUrl` 目前是 `yyj-lin.github.io/YYJKnowledge-base`。
 
 ## 八、回滚
 

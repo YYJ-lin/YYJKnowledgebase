@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: null
   locale: zh-CN
-  baseUrl: yyj-lin.github.io/yyj-quartz
+  baseUrl: yyj-lin.github.io/YYJKnowledge-base
   ignorePatterns:
     - private
     - templates
