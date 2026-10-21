@@ -26,8 +26,12 @@
       }
     },
     "optionSchema": {
-      "columns": { "type": "array" },
-      "brand": { "type": "object" }
+      "columns": {
+        "type": "array"
+      },
+      "brand": {
+        "type": "object"
+      }
     }
   }
 }

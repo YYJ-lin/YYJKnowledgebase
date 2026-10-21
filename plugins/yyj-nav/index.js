@@ -48,7 +48,6 @@ function Nav(opts) {
     )
   }
 
-  Comp.css = ""
   return Comp
 }
 

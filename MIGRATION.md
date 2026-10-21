@@ -12,17 +12,17 @@
 
 ## 二、当前进度
 
-| 项 | 状态 |
-|---|---|
-| Quartz 5 源码 | ✅ `~/sites/yyj-quartz`（v5.0.0，来自 Gitee 镜像） |
-| 依赖安装 | ✅ `npm install` 完成 |
-| 站点配置 | ✅ 标题 / `zh-CN` / baseUrl / 品牌配色 / 布局与侧栏排序 |
-| 内容迁移 | ✅ 7 篇 MDX → Obsidian Markdown（callout、Tabs、图片全部处理） |
-| 字体 | ✅ 自托管 IBM Plex Sans + JetBrains Mono（不走 Google CDN） |
-| 主题定制 | ✅ 760px 版心、首页 Hero + 三卡、四区页脚、暗色模式 |
-| 构建验证 | ✅ 本地构建 + `git archive` 干净检出构建均通过（78 文件） |
-| 本地预览 | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/YYJKnowledgebase/` 子路径） |
-| 部署 | ✅ 已上线 https://yyj-lin.github.io/YYJKnowledgebase/（Actions 自动构建 + Pages） |
+| 项            | 状态                                                                              |
+| ------------- | --------------------------------------------------------------------------------- |
+| Quartz 5 源码 | ✅ `~/sites/yyj-quartz`（v5.0.0，来自 Gitee 镜像）                                |
+| 依赖安装      | ✅ `npm install` 完成                                                             |
+| 站点配置      | ✅ 标题 / `zh-CN` / baseUrl / 品牌配色 / 布局与侧栏排序                           |
+| 内容迁移      | ✅ 7 篇 MDX → Obsidian Markdown（callout、Tabs、图片全部处理）                    |
+| 字体          | ✅ 自托管 IBM Plex Sans + JetBrains Mono（不走 Google CDN）                       |
+| 主题定制      | ✅ 760px 版心、首页 Hero + 三卡、四区页脚、暗色模式                               |
+| 构建验证      | ✅ 本地构建 + `git archive` 干净检出构建均通过（78 文件）                         |
+| 本地预览      | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/YYJKnowledgebase/` 子路径）        |
+| 部署          | ✅ 已上线 https://yyj-lin.github.io/YYJKnowledgebase/（Actions 自动构建 + Pages） |
 
 ## 三、环境事实
 

@@ -23,6 +23,7 @@ quartz/styles/        ← 主题样式
 └── variables.scss    ← 布局断点、栏宽
 quartz/static/        ← 静态资源（icon.png 站点图标、fonts/ 自托管字体）
 plugins/yyj-footer/   ← 自定义页脚组件（本地 Quartz 插件，四区 + 子路径安全链接）
+plugins/yyj-nav/      ← 顶栏导航组件（知识库 / 博客 / 关于我们 / GitHub）
 tools/                ← 构建与预览辅助脚本
 .github/workflows/deploy.yml  ← 推送到 v5 分支即自动部署
 ```
@@ -77,14 +78,14 @@ Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：�
 
 ## 从 Docusaurus 迁移的对照
 
-| 旧写法 | 现在 |
-| --- | --- |
-| `::::tip[标题]` | `> [!tip] 标题`（Obsidian callout） |
-| `<Tabs>` / `<TabItem>` | 并列小标题 |
-| `import ... from ...` | 删掉 |
-| `{/* truncate */}` | 删掉 |
-| `/img/xxx.png` | `../attachments/xxx.png` |
-| `[文字](/about)` | `[文字](../about/)` 或 `[[about/index]]` |
+| 旧写法                 | 现在                                     |
+| ---------------------- | ---------------------------------------- |
+| `::::tip[标题]`        | `> [!tip] 标题`（Obsidian callout）      |
+| `<Tabs>` / `<TabItem>` | 并列小标题                               |
+| `import ... from ...`  | 删掉                                     |
+| `{/* truncate */}`     | 删掉                                     |
+| `/img/xxx.png`         | `../attachments/xxx.png`                 |
+| `[文字](/about)`       | `[文字](../about/)` 或 `[[about/index]]` |
 
 行高亮 `{2,4}` 目前不支持，写了不报错也不生效。
 
@@ -94,7 +95,7 @@ Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：�
 - **侧边栏只显示当前分类**：explorer 的 `filterFn` 读当前 URL 的第一段来决定显示哪一类；首页和 `/kb` 显示完整目录；`tags` 永不进目录。
 - **`/kb` 是知识库汇总页**（`content/kb.md`），首页 Hero 的「进入知识库」指向它。
 - 想让侧边栏重新显示全部目录：删掉 `quartz.config.yaml` 里 explorer 的 `filterFn` 即可。
-- **顶栏**：本地组件 `plugins/yyj-nav`（知识库 / 博客 / 关于我们 / GitHub）+ 站点名 + 工具条，位于 `quartz/components/frames/DefaultFrame.tsx` 里的 `.topbar`（`grid-header` 区域横跨三列）。这是对上游 frame 的唯一改动。
+- **顶栏**：本地组件 `plugins/yyj-nav`（知识库 / 博客 / 关于我们 / GitHub）+ 站点名 + 工具条，位于 `quartz/components/frames/DefaultFrame.tsx` 里的 `.topbar`（`grid-header` 区域横跨三列）。这是对上游 frame 的改动；另外 也改了两处 meta（viewport-fit / theme-color）。
 - **手机端（≤800px）**：grid 顺序为 顶栏 → 左栏 → 正文 → 右栏 → 页脚；顶栏两行（站点名 + 工具条 / 导航），左栏拉满宽度避免目录浮层溢出。
 
 ## 自检

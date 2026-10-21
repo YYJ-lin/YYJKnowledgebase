@@ -10,5 +10,8 @@ if (!fs.existsSync(src)) {
   process.exit(1)
 }
 
-await sharp(src, { density: 512 }).resize(512, 512, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toFile(out)
+await sharp(src, { density: 512 })
+  .resize(512, 512, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+  .png()
+  .toFile(out)
 console.log(`已生成 ${out}`)

@@ -56,11 +56,7 @@ function Footer(opts) {
         ),
         brand
           ? h("div", { class: "yyj-footer-brand", key: "brand" }, [
-              h(
-                "a",
-                { class: "yyj-footer-brand-name", href: `${root}/` },
-                brand.title ?? "云屿集",
-              ),
+              h("a", { class: "yyj-footer-brand-name", href: `${root}/` }, brand.title ?? "云屿集"),
               brand.tagline ? h("p", { class: "yyj-footer-tagline" }, brand.tagline) : null,
               h("p", { class: "yyj-footer-copy" }, `© ${year} ${brand.title ?? "云屿集"}`),
             ])
@@ -69,7 +65,6 @@ function Footer(opts) {
     ])
   }
 
-  Comp.css = ""
   return Comp
 }
 

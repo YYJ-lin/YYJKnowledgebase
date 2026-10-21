@@ -48,12 +48,11 @@
 
 // ---------- 设计 token ----------
 :root {
-  --headerFont: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", system-ui, sans-serif;
-  --bodyFont: "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", system-ui, sans-serif;
-  --codeFont: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
-    monospace;
+  --headerFont:
+    "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --bodyFont:
+    "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --codeFont: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --titleFont: var(--headerFont);
 
   --yyj-content-width: 760px;
@@ -315,7 +314,9 @@ body[data-slug="index"] {
   font-size: 0.95rem;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
 
   svg {
     flex: none;

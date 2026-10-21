@@ -63,8 +63,16 @@ export default (() => {
           content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
         />
         <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9" />
-        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c0a09" />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: light)"
+          content={cfg.theme.colors.lightMode.light}
+        />
+        <meta
+          name="theme-color"
+          media="(prefers-color-scheme: dark)"
+          content={cfg.theme.colors.darkMode.light}
+        />
 
         <meta name="og:site_name" content={cfg.pageTitle}></meta>
         <meta property="og:title" content={title} />
