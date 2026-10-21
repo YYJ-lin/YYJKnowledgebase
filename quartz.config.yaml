@@ -163,10 +163,13 @@ plugins:
       priority: 50
       condition: not-index
   - source: "@quartz-community/graph"
-    enabled: false
+    enabled: true
+    options:
+      depth: 1
     layout:
       position: right
-      priority: 10
+      priority: 40
+      condition: not-index
   - source: "@quartz-community/search"
     enabled: true
     layout:
@@ -328,8 +331,6 @@ layout:
     folder:
       exclude:
         - reader-mode
-      positions:
-        right: []
     tag:
       exclude:
         - reader-mode
