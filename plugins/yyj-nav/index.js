@@ -4,9 +4,10 @@ import { h } from "preact"
  * 云屿集顶部导航。
  *
  * 桌面：文字链接 + 图标（GitHub / 微信 / QQ，二维码用 <details> 展开）
- * 手机：收进左上角的菜单按钮（<details>，无需 JS），顶栏只留 菜单 | 站点名 | 工具条
- *
- * 站内链接按 cfg.baseUrl 拼子路径，域名根和 GitHub Pages 项目页都成立。
+ * 手机：一个菜单按钮，里面两个标签页——
+ *   「导航」站点栏目 + 图标
+ *   「目录」当前分类下的文章列表（等价于桌面左侧的目录树）
+ * 两者合并在同一个菜单里，不再单独一个「探索」按钮。
  */
 
 const GITHUB_PATH =
@@ -68,13 +69,40 @@ function burgerIcon() {
   )
 }
 
+/** 当前分类下的文章（从 allFiles 里挑），用于手机菜单的「目录」标签页 */
+function sectionEntries(allFiles, currentSlug) {
+  const section = currentSlug.includes("/") ? currentSlug.split("/")[0] : null
+  if (!section) return []
+
+  return (allFiles ?? [])
+    .filter((f) => {
+      const slug = f.slug
+      if (!slug || slug === "index") return false
+      if (slug.split("/")[0] !== section) return false
+      if (slug.startsWith("tags")) return false
+      return true
+    })
+    .map((f) => ({
+      slug: f.slug,
+      title: f.frontmatter?.title ?? f.slug,
+      depth: f.slug.split("/").length - 2,
+      isIndex: f.slug.endsWith("/index"),
+    }))
+    .sort((a, b) => {
+      if (a.isIndex !== b.isIndex) return a.isIndex ? -1 : 1
+      return String(a.title).localeCompare(String(b.title), "zh-Hans-CN")
+    })
+}
+
 function Nav(opts) {
   const links = opts?.links ?? []
   const actions = opts?.actions ?? []
 
-  const Comp = ({ displayClass, cfg, fileData }) => {
+  const Comp = ({ displayClass, cfg, fileData, allFiles }) => {
     const root = siteRoot(cfg)
     const current = fileData?.slug ? `/${fileData.slug}` : "/"
+    const currentSlug = fileData?.slug ?? ""
+    const tree = sectionEntries(allFiles, currentSlug)
 
     const navLink = (it) => {
       const external = typeof it.href === "string" && it.href.length > 0
@@ -130,43 +158,111 @@ function Nav(opts) {
       )
     }
 
+    const tabs =
+      tree.length > 0
+        ? h("div", { class: "yyj-tabs", role: "tablist" }, [
+            h(
+              "button",
+              {
+                type: "button",
+                class: "yyj-tab is-active",
+                role: "tab",
+                "aria-selected": "true",
+                "data-target": "nav",
+              },
+              "导航",
+            ),
+            h(
+              "button",
+              {
+                type: "button",
+                class: "yyj-tab",
+                role: "tab",
+                "aria-selected": "false",
+                "data-target": "tree",
+              },
+              "目录",
+            ),
+          ])
+        : null
+
     return h("nav", { class: `yyj-nav ${displayClass ?? ""}`.trim(), "aria-label": "主导航" }, [
-      // 手机端：菜单按钮
       h("details", { class: "yyj-mobile-menu", name: "yyj-mobile-menu" }, [
         h("summary", { "aria-label": "菜单", title: "菜单" }, burgerIcon()),
         h("div", { class: "yyj-mobile-menu-panel" }, [
-          h("div", { class: "yyj-mobile-links" }, links.map(navLink)),
+          tabs,
+          h("div", { class: "yyj-mobile-links", "data-panel": "nav" }, links.map(navLink)),
           actions.length > 0
-            ? h("div", { class: "yyj-mobile-actions" }, actions.map(action))
+            ? h("div", { class: "yyj-mobile-actions", "data-panel": "nav" }, actions.map(action))
+            : null,
+          tree.length > 0
+            ? h(
+                "div",
+                { class: "yyj-tree", "data-panel": "tree", hidden: true },
+                tree.map((item) =>
+                  h(
+                    "a",
+                    {
+                      key: item.slug,
+                      href: `${root}/${item.slug}`,
+                      class:
+                        item.slug === currentSlug ? "yyj-tree-link is-active" : "yyj-tree-link",
+                      style: `padding-left: ${0.7 + Math.max(0, item.depth) * 0.9}rem`,
+                    },
+                    item.title,
+                  ),
+                ),
+              )
             : null,
         ]),
       ]),
-      // 桌面端：横排链接 + 图标
       h("div", { class: "yyj-nav-links" }, links.map(navLink)),
       actions.length > 0 ? h("div", { class: "yyj-nav-actions" }, actions.map(action)) : null,
     ])
   }
 
-  // 点空白处 / Esc 收起二维码面板与手机菜单
+  // 交互：标签页切换、点空白/Esc 收起、跳转后收起
   Comp.afterDOMLoaded = `
 (() => {
   if (window.__yyjNavBound) return;
   window.__yyjNavBound = true;
+
   const closeOthers = (target) => {
     document.querySelectorAll("details.yyj-qr[open], details.yyj-mobile-menu[open]").forEach((d) => {
       if (!d.contains(target)) d.removeAttribute("open");
     });
   };
-  document.addEventListener("click", (e) => closeOthers(e.target));
-  document.addEventListener("nav", () => {
-    document.querySelectorAll("details.yyj-mobile-menu[open]").forEach((d) => d.removeAttribute("open"));
+
+  document.addEventListener("click", (e) => {
+    const tab = e.target.closest && e.target.closest(".yyj-tab");
+    if (tab) {
+      const panel = tab.closest(".yyj-mobile-menu-panel");
+      const target = tab.getAttribute("data-target");
+      panel.querySelectorAll(".yyj-tab").forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panel.querySelectorAll("[data-panel]").forEach((p) => {
+        p.hidden = p.getAttribute("data-panel") !== target;
+      });
+      return;
+    }
+    closeOthers(e.target);
   });
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       document.querySelectorAll("details.yyj-qr[open], details.yyj-mobile-menu[open]").forEach((d) =>
         d.removeAttribute("open"),
       );
     }
+  });
+
+  document.addEventListener("nav", () => {
+    document.querySelectorAll("details.yyj-mobile-menu[open]").forEach((d) =>
+      d.removeAttribute("open"),
+    );
   });
 })();
 `
