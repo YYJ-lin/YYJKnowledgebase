@@ -1,100 +1,65 @@
-# 云屿集 · 从 Docusaurus 迁移到 Quartz（交接文档）
+# 交接文档
 
-> 新会话从这里接着做，不依赖对话记忆。最后更新：2026-10-20（已上线）。
+> 新会话从这里接着做，不依赖对话记忆。最后更新：2026-10-21。
 
-## 一、目标
+## 一、现状
 
-把站点从 **Docusaurus（MDX）** 迁到 **Quartz 5（纯 Markdown / Obsidian vault）**：
+站点从 Docusaurus 迁到 **Quartz 5**，已上线：https://yyj-lin.github.io/YYJKnowledgebase/
 
-- 在 Obsidian 里写，实时预览，所见即所得
-- 线上站点与 Obsidian 用同一套 Markdown 语法
-- 保留云屿集品牌视觉（配色、字体、排版）
+| 项     | 状态                                                                |
+| ------ | ------------------------------------------------------------------- |
+| 框架   | Quartz 5（Gitee 镜像克隆，`upstream` 指向镜像，`origin` 是 GitHub） |
+| 内容   | `content/` 下 11 篇 md，4 个分类 + 关于                             |
+| 品牌   | 自托管 IBM Plex Sans / JetBrains Mono，知识蓝配色，日夜两套         |
+| 布局   | 通栏顶栏 + 左目录 + 居中正文 + 右目录/图谱 + 四列页脚               |
+| 手机端 | 顶栏收成一行，「导航 / 目录」两个页签，目录按分类折叠带篇数         |
+| 部署   | GitHub Actions → Pages，push `main` 即发布                          |
 
-## 二、当前进度
+## 二、结构决策（别轻易改）
 
-| 项            | 状态                                                                              |
-| ------------- | --------------------------------------------------------------------------------- |
-| Quartz 5 源码 | ✅ `~/sites/yyj-quartz`（v5.0.0，来自 Gitee 镜像）                                |
-| 依赖安装      | ✅ `npm install` 完成                                                             |
-| 站点配置      | ✅ 标题 / `zh-CN` / baseUrl / 品牌配色 / 布局与侧栏排序                           |
-| 内容迁移      | ✅ 7 篇 MDX → Obsidian Markdown（callout、Tabs、图片全部处理）                    |
-| 字体          | ✅ 自托管 IBM Plex Sans + JetBrains Mono（不走 Google CDN）                       |
-| 主题定制      | ✅ 760px 版心、首页 Hero + 三卡、四区页脚、暗色模式                               |
-| 构建验证      | ✅ 本地构建 + `git archive` 干净检出构建均通过（78 文件）                         |
-| 本地预览      | ✅ `./tools/preview.sh` + systemd 服务（模拟 `/YYJKnowledgebase/` 子路径）        |
-| 部署          | ✅ 已上线 https://yyj-lin.github.io/YYJKnowledgebase/（Actions 自动构建 + Pages） |
+1. **顶栏项由 frontmatter 驱动**：分类 `index.md` 写 `nav: true` + `navOrder`（+ `navLabel`），`plugins/yyj-nav` 从 `allFiles` 里挑；`quartz.config.yaml` 里的 `links` 只是兜底。
+2. **面包屑层级**同理：`parent: kb` 表示挂在知识库下，不写就是顶级栏目（`plugins/yyj-crumbs`）。
+3. **搜索/主题/阅读模式在顶栏**，不在左栏；左栏只放目录树。
+4. **手机端没有独立侧栏**：目录并进了菜单，`.sidebar.left` 在 ≤800px 直接隐藏。
+5. **页脚/面包屑/导航都是本地插件**，因为内置组件只会拼死链，子路径部署会 404。
 
-## 三、环境事实
+## 三、踩过的坑
 
-- 工作机：Ubuntu 24.04，Node v22.20.0（`~/.local/node/bin`），npm 10.9.3
-- **GitHub HTTPS 超时，SSH 正常**（`ssh -T git@github.com` 返回 `Hi YYJ-lin!`）
-- 拉开源代码用 Gitee 镜像：`https://gitee.com/linxiansheng0409/quartz`（已设为 `upstream`）
-- 新仓库 remote：`origin` → `git@github.com:YYJ-lin/YYJKnowledgebase.git`（已建、已推、Pages 已启用）
-- 旧站：`~/sites/my-website`（Docusaurus，仓库 `YYJ-wiki`），后台编辑器 `yyj-editor`（3002），**全程未改动**
-- 端口占用：3000 / 3001 被旧后台占用，所以 `quartz build --serve` 要加 `--wsPort 3011`
-- 本地预览：`http://192.168.1.102:8095/yyj-quartz/`（systemd 用户服务 `yyj-quartz-preview`）
+1. **`note-properties` 插件不能关**：front matter 解析挂在它身上，关掉后全站标题变「无题」。要隐藏属性面板用 `hidePropertiesView: true`。
+2. **字体别用 `@quartz-community/quartz-fonts`**：默认注入 Google Fonts 链接；自托管模式又写死 `/static/...` 子路径会 404。现在用 `fontOrigin: local` + `custom.scss` 里相对路径 `@font-face`。
+3. **md 里的 `<a>` 里不要放 `<h3>`**：标题锚点会插进来截断 `<a>`。
+4. **正文不要再写 `#` 标题**：h1 由 frontmatter 生成。
+5. **`.sidebar` 不能整块 `display:none`**（在还需要搜索弹层的页面）：`position: fixed` 的弹层会跟着隐藏。我们用条件渲染 + 移动端单独处理。
+6. **祖先有 `transform` / `backdrop-filter` 时，`position: fixed` 弹层会以它为包含块**：搜索弹层「偏了」就是这个原因；顶栏毛玻璃放在 `::before`，居中不能用 transform，改用负 margin。
+7. **`.yyj-nav` 的 `overflow-x: auto` 会连带 `overflow-y`**：手机菜单面板会被裁在 40px 容器里，点了像没反应。
+8. **`height: 100%` 放在 grid item（.card）上**：auto 行高会先解成较小值，内容溢出压到下一张卡。
+9. **改了 `plugins/*/` 必须删 `.quartz/plugins/<name>` 缓存**，否则构建继续用旧副本。
+10. **GitHub Pages 第一次要手动启用 Pages**（Source: GitHub Actions）；`configure-pages` 的 `enablement: true` 需要管理员权限，GITHUB_TOKEN 没有。
+11. **wiki 链接按文件名/路径写**，按标题写会死链。
+12. **Mermaid 是浏览器端渲染**（cdnjs 懒加载），静态 HTML 里只有 `<code class="mermaid">`。
+13. **背景进程会被 ssh 回收**：长期预览用 systemd 用户服务 `yyj-quartz-preview`。
 
-## 四、目录与关键文件
-
-```
-content/                 Obsidian vault（首页 / about / business / industry / tools / blog / attachments）
-quartz.config.yaml       站点配置：标题、locale、baseUrl、配色、45 个插件、布局
-quartz/styles/custom.scss  品牌样式：字体 @font-face、Hero、卡片、四区页脚、暗色
-quartz/styles/variables.scss  断点与栏宽（$sidePanelWidth 已改 280px）
-quartz/static/fonts/     自托管 woff2（5 个文件）
-quartz/static/icon.png   由 content/attachments/logo.svg 生成的站点图标（tools/make_icon.mjs）
-plugins/yyj-footer/      自定义页脚插件（Preact，纯 JS，无需编译）
-tools/preview.sh         构建 + 同步 + 重启预览
-tools/deploy.sh          首次部署：检查远端仓库并 push
-.github/workflows/deploy.yml  push v5 分支 → 构建 → Pages
-```
-
-## 五、这轮踩过的坑（改动前务必先读）
-
-1. **`note-properties` 插件不能关**：front matter 解析挂在这个插件上，关掉后全站标题变「无题」、正文把 front matter 当文本渲染。要隐藏属性面板用 `hidePropertiesView: true`。
-2. **字体别用 `@quartz-community/quartz-fonts`**：默认在 `<head>` 注入 Google Fonts 链接（国内会阻塞渲染）；自托管模式又把路径写死成 `/static/...`，项目页子路径下 404。现在的做法是 `fontOrigin: local` + 插件关闭 + `custom.scss` 里相对路径 `static/fonts/…` 的 `@font-face`。
-3. **md 里的 HTML `<a>` 里不要放 `<h3>`**：标题锚点会插进来把 `<a>` 截断，卡片会拆成多个链接。首页卡片用 `<span class="card-title">`。
-4. **内置页脚不能放站内链接**：只吃写死 href，子路径部署会 404。已换成本地插件，用 `cfg.baseUrl` 推导根路径。
-5. **正文不要再写 `#` 一级标题**：页面 h1 由 front matter `title` 生成，否则出现两个大标题。
-6. **`{2,4}` 行高亮**：Quartz 不支持，写了不报错也不生效。
-7. **背景进程**：ssh 命令结束后 `nohup ... &` 会被回收，长期预览要用 systemd 用户服务。
-8. **wiki 链接按文件名/路径写**：`[[写作指南]]`（页面标题）会变成死链，必须写 `[[writing-guide]]` 或 `[[about/writing-guide|写作指南]]`。
-9. **不要给 `.sidebar` 加 `display:none`**：搜索弹层（`.search-container`）是 sidebar 的子元素，整栏隐藏会连搜索一起隐藏（点了没反应、输入框宽度为 0）。首页的做法是把 grid 改成单栏 + `grid-template-areas` 里保留 `grid-sidebar-left`，再让 `.sidebar.left` 横排贴右上，只隐藏其中的 `.page-title` / `.explorer`。
-10. **手机端目录浮层会溢出 16px**：`.explorer-content` 是 `position:absolute; width:100vw`，而 `#quartz-body` 在移动端有 `padding:0 1rem`，左栏因此偏移 1rem。修法是给移动端的 `.sidebar.left` 加 `margin:0 -1rem; padding-left/right:1rem` 让它拉满。
-11. **搜索弹层「偏了」= 祖先元素有 transform / backdrop-filter**：它们会成为 的包含块，弹层就从那个元素左上角开始铺。顶栏毛玻璃因此改到 上，居中也不能用 ，改用 。
-12. **改了本地插件要清缓存**： 是构建时拷进去的副本，改完 不删它会继续用旧代码（现象：CSS 变了但组件结构没变）。 再 build。
-13. **移动端 grid 顺序**：`$mobileGrid` 里 `grid-header` 要放在第一行，否则顶栏会跑到「探索」按钮下面。
-14. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
-15. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
-
-## 六、日常发布
+## 四、运维
 
 ```bash
 cd ~/sites/yyj-quartz
-# 写内容：用 Obsidian 打开 content/，或直接改 md
-git add . && git commit -m "写一篇新文章" && git push
+./tools/preview.sh            # 构建 + 同步 + 重启预览服务
+./tools/verify.sh             # 产物自检
+python3 tools/check_links.py  # 站内链接体检（默认线上）
+systemctl --user status yyj-quartz-preview
+journalctl --user -u yyj-quartz-preview -n 50
 ```
 
-约 1–2 分钟后线上自动更新。排查构建失败：仓库 Actions 页面看那一次 run 的日志。
+部署：`git push` → Actions → Pages。`tools/deploy.sh` 是首次部署用的检查脚本，平时用不到。
 
-验收 checklist（上线时已全部通过，改版后再跑一遍）：
+## 五、待办
 
-- [x] 首页 Hero、三卡样式正常，卡片可点
-- [x] 侧栏顺序：业务分享 / 行业知识 / 工具资源 / 关于云屿集 / 博客
-- [x] 字体是 IBM Plex Sans（Network 里无 Google Fonts 请求）
-- [x] 组件演示页 callout、mermaid、数学公式（MathJax）、脚注、wiki 链接正常
-- [x] 搜索能搜到「写作」
-- [x] 暗色模式切换正常
-- [x] 页脚四区链接全部可达（无 404）
-- [x] 404 页面中文
+- [ ] 自定义域名（改 `baseUrl` + `CNAME`）
+- [ ] `/services/` 单页（技术博客为主，获客只留一个触点）
+- [ ] `/archive/` 归档页（文章 ≥20 篇再做）
+- [ ] giscus 评论、Umami 统计（按需，需要外部账号）
+- [ ] 二级分类（`tech/erpnext/` 这类）：菜单目录目前只按一级分组，需要再加一层折叠
 
-## 七、已知遗留
+## 六、回滚
 
-- （已解决）公式改用 MathJax 服务端 SVG，产物里已无 KaTeX/jsdelivr 引用
-- Mermaid 仍从 cdnjs 懒加载（插件写死），国内可能偏慢；目前只在有公式时才有字体请求。要彻底去掉需给 latex 插件打补丁或换渲染器。
-- 页脚在桌面端位于中间栏网格内（宽度约 930px），未做成通栏；如需通栏要改 Quartz 的 grid 布局。
-- 站点还没有自定义域名，`baseUrl` 目前是 `yyj-lin.github.io/YYJKnowledgebase`。
-
-## 八、回滚
-
-旧站与旧仓库完全没动：`~/sites/my-website`、`git@github.com:YYJ-lin/YYJ-wiki.git`。新站验证不通过时，把 DNS/入口指回旧站即可，删除新仓库也不影响旧站。
+旧站 `~/sites/my-website`（Docusaurus）与仓库 `YYJ-wiki` 全程未动；新站出问题把入口指回旧站即可。

@@ -1,245 +1,130 @@
 ---
 title: 写作指南
-description: 如何写知识库文章、博客，以及常用写法和发布流程
+description: 这个站怎么组织内容、怎么在 Obsidian 里写、怎么发布
 ---
 
-这一篇告诉你**以后怎么写文章**。先看整体流程，再逐条看细节。
+这一页写给未来的自己：新文章放哪、front matter 怎么写、怎么在本地看一眼再发布。
 
-## 一、文件放哪
+## 一、目录结构
 
-站点直接读取 `content/` 目录，也就是用 Obsidian 打开的那个 vault：
+站点直接读 `content/`，用 Obsidian 打开这个目录就能写：
 
 ```
 content/
-├── index.md              ← 首页
-├── about/                ← 关于本站
-│   ├── index.md          ← 分类的「目录页」
-│   ├── writing-guide.md
-│   └── components.md
-├── business/             ← 知识库分类：业务分享
+├── index.md              首页
+├── tech/                 技术手记（顶栏「技术手记」）
 │   └── index.md
-├── industry/             ← 知识库分类：行业知识
-├── tools/                ← 知识库分类：工具资源
-├── tech/                 ← 技术手记（按时间倒序）
-│   └── 2026-10-19-hello.md
-└── attachments/          ← 图片等附件
+├── kb.md                 知识库总入口（顶栏「知识库」）
+├── business/             知识库 › 业务分享
+├── industry/             知识库 › 行业知识
+├── tools/                资源与工具
+├── about/                关于（含 联系 / 隐私 / 许可 / 写作指南 / 开站记）
+└── attachments/          图片附件
 ```
 
-**知识库文章 → `content/<分类>/<文件名>.md`，技术手记 → `content/tech/<日期>-<标题>.md`。**
+**文件名就是网址**：`content/tech/2026-10-21-docker.md` → `/tech/2026-10-21-docker`。改了文件名要给旧地址留一条 `aliases`，否则老链接会 404。
 
-文件名就是网址：`content/business/2026-q1-retro.md` 对应 `/business/2026-q1-retro`。
-
-## 二、一篇文章的样子（front matter）
-
-每篇文章开头用 `---` 包起来的一段元信息：
+## 二、front matter
 
 ```yaml
 ---
-title: 环境准备
-description: 安装前的系统依赖与版本确认
-date: 2026-10-20
-tags:
-  - 部署
+title: Docker 里跑 ERPNext 的三个坑
+description: 一句话说明这篇解决什么问题
+date: 2026-10-21
+tags: [docker, erpnext]
 ---
 ```
 
-| 字段          | 作用                                            | 是否必填 |
-| ------------- | ----------------------------------------------- | -------- |
-| `title`       | 文章标题（也是侧边栏显示名，同时渲染成页面 h1） | 必填     |
-| `description` | 摘要，用于 SEO 和列表页                         | 建议写   |
-| `date`        | 日期，博客必填；知识库可选                      | 博客必填 |
-| `tags`        | 标签，会出现在标签页和文章顶部                  | 可选     |
-| `aliases`     | 别名，用于跳转                                  | 可选     |
+| 字段                            | 作用                                                    |
+| ------------------------------- | ------------------------------------------------------- |
+| `title`                         | 标题，同时渲染成页面 h1 和侧栏名字                      |
+| `description`                   | 摘要，用于搜索与分享预览                                |
+| `date`                          | 技术手记建议写；知识库可选                              |
+| `tags`                          | 会生成标签页，并在文章顶部显示                          |
+| `aliases`                       | 旧地址跳转，改文件名时必填                              |
+| `nav` / `navOrder` / `navLabel` | 给**分类首页**用：进顶栏、排序、导航显示名              |
+| `parent`                        | 给**分类首页**用：面包屑挂到某个上级（如 `parent: kb`） |
 
-> [!warning] 正文里不要再写一级标题
-> 页面 h1 由 front matter 的 `title` 自动生成。正文里再写一个 `# 标题` 会出现两个大标题。
+> [!warning] 正文不要再写一级标题
+> 页面 h1 由 `title` 生成，正文里再写 `# 标题` 会出现两个大标题。
 
-## 三、怎么分类（新增一个主题）
+## 三、新增一个分类
 
-1. 在 `content/` 下建一个文件夹，例如 `docker/`；
-2. 里面放一个 `index.md`，写上分类名和介绍：
+在 `content/` 下建目录，放一个 `index.md`：
 
-```md
+```yaml
 ---
 title: Docker
-description: 容器化部署相关的一切
+description: 容器化部署相关
+nav: true
+navOrder: 5
+parent: kb # 想挂在知识库下面才写；不写就是顶级栏目
 ---
-
-这里是 Docker 分类的说明，会显示在分类页顶部。
 ```
 
-3. 往里放 `.md` 文章。
+提交后会自动发生这些事：顶栏多一项（如果写了 `nav: true`）、手机菜单「目录」里多一个可折叠分类并显示篇数、面包屑自动补上级、搜索索引更新。
 
-保存提交后，**侧边栏会自动出现「Docker」分组**，分类页会自动列出里面的文章，不用改任何代码。
+## 四、常用写法
 
-## 四、常用 Markdown
-
-```md
-## 二级标题
-
-### 三级标题
-
-**加粗** _斜体_ ~~删除线~~ `行内代码`
-
-- 无序列表
-
-1. 有序列表
-
-- [x] 任务列表
-
-[链接文字](../about/) ![图片](../attachments/logo.svg)
-
-| 表格 | 列  |
-| ---- | --- |
-| 值   | 值  |
-
-> 引用块
-```
-
-## 五、提示框（Callout）
-
-用 Obsidian 的标准写法，`[!类型]` 后面跟标题：
+### 提示框
 
 ```md
-> [!tip] 标题
+> [!tip] 小标题
 > 内容
 ```
 
-类型有 `note / tip / info / caution / warning / danger` 六种。标题后面加 `-` 默认折叠、加 `+` 默认展开：
+类型：`note / tip / info / caution / warning / danger`。
 
-```md
-> [!tip]- 点开看细节
-> 折叠起来的内容
-```
-
-> [!tip] 和旧站的区别
-> 旧站在 Docusaurus 里用的 `::::tip[标题]` 四冒号写法，Quartz 里全部改成了上面的 `> [!tip]` 写法。功能一样，但语法是 Obsidian 原生的。
-
-## 六、代码块
-
-只要记住「三个反引号」：
+### 代码块
 
 ````md
 ```bash
-sudo apt update
+docker compose up -d
 ```
 ````
 
-- 第一行写语言名（不写也行，只是没有高亮）
-- 最后一行再写三个反引号收尾
+### 图片
 
-常用语言名：`bash` `js` `jsx` `ts` `json` `yaml` `html` `css` `python` `sql`
-
-想显示文件名：
-
-````md
-```jsx title="Hello.js"
-export default function Hello() {
-  return <div>你好</div>
-}
-```
-````
-
-想高亮某几行（大括号里写行号）：
-
-````md
-```python {2,4}
-...
-```
-````
-
-## 七、Mermaid 图
-
-````md
-```mermaid
-graph TD
-  A[开始] --> B[结束]
-```
-````
-
-## 八、数学公式
-
-行内 `$E = mc^2$`，块级用 `$$ … $$` 包起来。
-
-## 九、脚注
+图片放 `content/attachments/`，用相对路径：
 
 ```md
-文字[^1]
-
-[^1]: 脚注内容
+![截图](../attachments/docker-1.png)
 ```
 
-## 十、折叠块
+### Wiki 链接
 
 ```md
-<details>
-  <summary>点我展开</summary>
-  隐藏内容
-</details>
+[[tech/2026-10-21-docker]]
+[[tech/2026-10-21-docker|Docker 那篇]]
 ```
 
-## 十一、Wiki 链接
+按**文件名或路径**写，不要按标题写。
 
-Obsidian 的双向链接语法，指向别的笔记，文件名改了也不会断：
+### 表格、任务列表、脚注、折叠块、Mermaid、数学公式
 
-```md
-[[writing-guide]]
-[[about/writing-guide|显示成别的文字]]
-```
+都支持，语法与 Obsidian 一致（`- [ ]` 任务、`[^1]` 脚注、`<details>` 折叠、` ```mermaid `、`$…$`）。
 
-跨目录也可以：`[[business/2026-q1-retro]]`。普通相对链接 `[文字](../about/)` 同样可用，两种混着写没问题。
-
-> [!warning] 按文件名或路径写，不要按标题写
-> 笔记叫 `writing-guide.md`，就要写 `[[writing-guide]]` 或 `[[about/writing-guide]]`；写 `[[写作指南]]`（页面标题）会变成死链。
-
-## 十二、图片
-
-图片统一放 `content/attachments/`，用相对路径引用：
-
-```md
-![示意图](../attachments/logo.svg)
-```
-
-在 Obsidian 里直接拖图片进笔记，它会自动存到附件目录并插好链接。
-
-## 十三、博客怎么写
-
-```yaml
----
-title: 文章标题
-description: 一句话摘要
-date: 2026-10-20
-tags:
-  - 部署
-  - 排错
----
-```
-
-技术手记放在 `content/tech/`，建议文件名用 `日期-短标题`，例如 `2026-10-20-first-deploy.md`。
-
-## 十四、本地预览与发布
+## 五、本地看效果
 
 ```bash
 cd ~/sites/yyj-quartz
-export PATH=$HOME/.local/node/bin:$PATH
-npx quartz build --serve      # 本地预览 http://localhost:8080
+./tools/preview.sh        # 构建 + 同步 + 重启预览
 ```
 
-改完提交推上去，GitHub Actions 自动构建发布：
+预览地址 http://192.168.1.102:8095/YYJKnowledgebase/ ，挂在子路径下，和线上环境一致。
+
+## 六、发布
 
 ```bash
-git add .
-git commit -m "写一篇新文章"
-git push
+git add . && git commit -m "写一篇 Docker 的文章" && git push
 ```
 
-> [!note] 在 Obsidian 里写
-> 用 Obsidian 打开 `~/sites/yyj-quartz/content` 这个目录即可，图片和 wiki 链接都会自动处理。Obsidian 的预览效果与线上一致，因为它和 Quartz 用的是同一套 Markdown 语法。
+推送后 GitHub Actions 自动构建发布，约 1–2 分钟。构建失败的话去仓库 Actions 页面看那一次 run 的日志。
 
-## 十五、写文章要遵守的几条
+## 七、几条约定
 
-1. 一篇文章一个主题，标题用「做什么」而不是「标题党」；
-2. 正文多用小标题分段，长段落拆开；
-3. 代码块写清语言和文件名，命令写清在哪台机器执行；
-4. 图片放 `content/attachments/`，用相对路径引用；
-5. 改完本地 `npx quartz build --serve` 看一眼再提交。
+1. 一篇一个主题，标题写清楚"解决什么问题"；
+2. 长文多用小标题，代码块标语言；
+3. 命令写清在哪台机器跑；
+4. 图片放 `attachments/`，别用外链（会挂）；
+5. 发布前跑一遍 `./tools/preview.sh` 和 `python3 tools/check_links.py`。

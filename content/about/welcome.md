@@ -1,10 +1,10 @@
 ---
-title: 欢迎来到云屿集
+title: 开站记
 description: 云屿集开站了，这里会放业务分享和行业知识，偶尔写点零散的想法
 date: 2026-10-19
 tags:
   - 公告
-aliases: ["blog/2026-10-19-hello"]
+aliases: ["blog/2026-10-19-hello", "tech/2026-10-19-hello"]
 ---
 
 云屿集开站了。

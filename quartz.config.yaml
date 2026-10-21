@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
   pageTitle: 云屿集
-  pageTitleSuffix: " · 业务分享与行业知识"
+  pageTitleSuffix: " · 技术手记与业务笔记"
   enableSPA: true
   enablePopovers: true
   analytics:
@@ -274,6 +274,8 @@ plugins:
         - { label: 微信, icon: wechat, image: /attachments/wechat-qr.webp }
         - { label: QQ, icon: qq, image: /attachments/qq-qr.webp }
       legal:
+        - { label: 隐私说明, to: /about/privacy }
+        - { label: 版权与许可, to: /about/license }
         - { label: RSS, to: /index.xml }
       brand:
         title: 云屿集

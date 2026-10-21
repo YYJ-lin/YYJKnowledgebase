@@ -13,7 +13,7 @@ aliases: ["contact/index"]
 
 ## 微信 / QQ
 
-扫码加我，备注一下来意，比如「博客纠错」或「ERPNext 咨询」。
+扫码加我，备注一下来意，比如「文章纠错」或「ERPNext 咨询」。
 
 ![微信二维码](../attachments/wechat-qr.webp)
 

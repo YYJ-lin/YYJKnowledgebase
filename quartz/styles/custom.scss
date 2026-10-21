@@ -9,6 +9,31 @@
 //       这样部署在域名根或 /yyj-quartz/ 子路径下都能加载
 // =========================================================
 
+// =========================================================
+// 云屿集自定义样式（按区块组织，顺序 = 层叠顺序）
+// 目录：
+//   01. 字体
+//   02. 设计 token
+//   03. 版心与正文
+//   04. 首页 Hero
+//   05. 通栏顶栏（站点名 + 主导航 + 搜索 + 工具条）
+//   06. 首页（对齐旧站：无侧栏的落地页）
+//   07. 首页卡片
+//   08. 顶栏
+//   09. 侧栏
+//   10. 页脚（自定义组件 plugins/yyj-footer）
+//   11. 代码
+//   12. break-ui：极端内容兜底
+//   13. 顶栏右侧动作：GitHub 图标 + 微信/QQ 二维码
+//   14. 手机端导航（菜单按钮）
+//   15. 手机端布局
+//   16. 手机端：侧边栏（探索面板）与点击目标
+//   17. 手机菜单里的「导航 / 目录」标签页
+//   18. 目录：按分类折叠
+//   19. 面包屑
+//   20. 页脚法务行 + 回到顶部
+// =========================================================
+
 // ---------- 字体 ----------
 @font-face {
   font-family: "IBM Plex Sans";
@@ -1446,50 +1471,4 @@ footer .yyj-qr-panel {
 .yyj-to-top:hover {
   color: var(--yyj-brand);
   border-color: var(--yyj-brand);
-}
-
-// ---------- 404 ----------
-.yyj-404 {
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-  }
-}
-
-.yyj-404-search {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin: 1rem 0 1.5rem;
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--yyj-line);
-  border-radius: 999px;
-  background: var(--lightgray);
-  color: var(--darkgray);
-  font: inherit;
-  font-size: 0.92rem;
-  cursor: pointer;
-
-  &:hover {
-    border-color: var(--yyj-brand);
-    color: var(--yyj-brand);
-  }
-}
-
-.yyj-404-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  a {
-    color: var(--secondary);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }

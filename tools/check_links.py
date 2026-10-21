@@ -15,8 +15,8 @@ BASE = sys.argv[1] if len(sys.argv) > 1 else "https://yyj-lin.github.io/YYJKnowl
 if not BASE.endswith("/"):
     BASE += "/"
 
-SEEDS = ["", "kb", "about/", "about/components", "about/writing-guide", "business/",
-         "industry/", "tools/", "blog/", "blog/2026-10-19-hello"]
+SEEDS = ["", "kb", "tech/", "tech/index", "tools/", "about/", "about/contact",
+         "about/privacy", "about/license", "about/writing-guide", "business/", "industry/"]
 
 
 def fetch(url):
