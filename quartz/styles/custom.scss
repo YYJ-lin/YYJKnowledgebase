@@ -1261,3 +1261,94 @@ footer .yyj-qr-panel {
   letter-spacing: 0.06em;
   color: var(--yyj-muted);
 }
+
+// ---------- 目录：按分类折叠 ----------
+.yyj-tree {
+  padding: 0.2rem 0 0.4rem;
+}
+
+.yyj-tree-group {
+  border-radius: 10px;
+}
+
+.yyj-tree-group[open] {
+  background: color-mix(in srgb, var(--lightgray) 55%, transparent);
+}
+
+.yyj-tree-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--dark);
+  font-size: 0.95rem;
+  font-weight: 500;
+  touch-action: manipulation;
+}
+
+.yyj-tree-heading::-webkit-details-marker {
+  display: none;
+}
+
+.yyj-tree-heading::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: auto;
+  border-right: 1.6px solid var(--yyj-muted);
+  border-bottom: 1.6px solid var(--yyj-muted);
+  transform: rotate(-45deg);
+  transition: transform 160ms var(--yyj-ease-out);
+}
+
+.yyj-tree-group[open] > .yyj-tree-heading::after {
+  transform: rotate(45deg);
+}
+
+.yyj-tree-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.yyj-tree-count {
+  margin-left: auto;
+  min-width: 22px;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--lightgray);
+  color: var(--yyj-muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.yyj-tree-heading::after {
+  margin-left: 0.15rem;
+}
+
+.yyj-tree-group[open] .yyj-tree-count {
+  margin-left: auto;
+}
+
+.yyj-tree-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 0 0.4rem;
+}
+
+.yyj-tree-link {
+  min-height: 44px;
+  padding: 0 0.7rem 0 1.35rem;
+  font-size: 0.92rem;
+  border-radius: 8px;
+}
+
+.yyj-tree-link:hover {
+  background: var(--light);
+}

@@ -6,7 +6,7 @@ import { h } from "preact"
  * 桌面：文字链接 + 图标（GitHub / 微信 / QQ，二维码用 <details> 展开）
  * 手机：一个菜单按钮，两个标签页
  *   「导航」站点栏目 + 图标
- *   「目录」文章列表：在分类里显示本分类，在首页/知识库显示全部分类
+ *   「目录」按分类折叠：分类标题是 <details>，点开才看到下面的文章（带篇数）
  */
 
 const GITHUB_PATH =
@@ -24,7 +24,7 @@ const ICONS = {
   qq: { path: QQ_PATH, viewBox: "0 0 24 24" },
 }
 
-// 分类顺序（和侧栏 sortFn 保持一致），新的分类按名字排在后面
+// 分类顺序（和侧栏 sortFn 一致），新分类按名字排在后面
 const SECTION_RANK = { business: 1, industry: 2, tools: 3, about: 4, blog: 5 }
 
 function siteRoot(cfg) {
@@ -79,9 +79,8 @@ function sortItems(items) {
 }
 
 /**
- * 菜单里的「目录」数据。
- * - 在某个分类里：只列这个分类的文章
- * - 在首页 / 知识库：列出全部分类（每个分类一个小标题 + 文章）
+ * 菜单「目录」的数据：按分类分组，每组带篇数。
+ * 分类页里只保留当前分类；首页/知识库列出全部分类。
  */
 function buildTree(allFiles, currentSlug) {
   const entries = (allFiles ?? [])
@@ -100,14 +99,24 @@ function buildTree(allFiles, currentSlug) {
 
   if (section) {
     const items = sortItems(entries.filter((e) => e.segments[0] === section))
-    return items.length > 0
-      ? { groups: [{ key: section, title: null, items }], defaultTab: "nav" }
-      : { groups: [], defaultTab: "nav" }
+    if (items.length === 0) return { groups: [], section: null, defaultTab: "nav" }
+    return {
+      groups: [
+        {
+          key: section,
+          title: items.find((i) => i.isIndex)?.title ?? section,
+          indexItem: items.find((i) => i.isIndex) ?? null,
+          items: items.filter((i) => !i.isIndex),
+          count: items.length,
+        },
+      ],
+      section,
+      defaultTab: "nav",
+    }
   }
 
   const bySection = new Map()
   for (const e of entries) {
-    // 单段 slug 是顶层页面（kb 之类），单独归到「页面」
     const key = e.segments.length > 1 ? e.segments[0] : "__pages"
     if (!bySection.has(key)) bySection.set(key, [])
     bySection.get(key).push(e)
@@ -122,13 +131,13 @@ function buildTree(allFiles, currentSlug) {
         title: key === "__pages" ? "页面" : (indexItem?.title ?? key),
         indexItem,
         rank: key === "__pages" ? 99 : (SECTION_RANK[key] ?? 90),
-        // 分类首页做成小标题链接，正文列表里不再重复
         items: sorted.filter((i) => !i.isIndex),
+        count: sorted.length,
       }
     })
     .sort((a, b) => a.rank - b.rank || String(a.title).localeCompare(String(b.title), "zh"))
 
-  return { groups, defaultTab: groups.length > 0 ? "tree" : "nav" }
+  return { groups, section: null, defaultTab: groups.length > 0 ? "tree" : "nav" }
 }
 
 function Nav(opts) {
@@ -196,7 +205,7 @@ function Nav(opts) {
       )
     }
 
-    const treeLink = (item) =>
+    const treeLink = (item, label) =>
       h(
         "a",
         {
@@ -204,40 +213,40 @@ function Nav(opts) {
           href: `${root}/${item.slug}`,
           class: item.slug === currentSlug ? "yyj-tree-link is-active" : "yyj-tree-link",
         },
-        item.title,
+        label ?? item.title,
       )
 
     const treeBody =
       groups.length === 0
         ? null
-        : groups.length === 1 && groups[0].title === null
-          ? h(
-              "div",
-              { class: "yyj-tree", "data-panel": "tree", hidden: !isTree },
-              groups[0].items.map(treeLink),
-            )
-          : h(
-              "div",
-              { class: "yyj-tree", "data-panel": "tree", hidden: !isTree },
-              groups.map((g) =>
-                h("div", { class: "yyj-tree-group", key: g.key }, [
-                  g.indexItem
-                    ? h(
-                        "a",
-                        {
-                          class:
-                            g.indexItem.slug === currentSlug
-                              ? "yyj-tree-heading is-active"
-                              : "yyj-tree-heading",
-                          href: `${root}/${g.indexItem.slug}`,
-                        },
-                        g.title,
-                      )
-                    : h("div", { class: "yyj-tree-heading" }, g.title),
-                  ...g.items.map(treeLink),
-                ]),
+        : h(
+            "div",
+            { class: "yyj-tree", "data-panel": "tree", hidden: !isTree },
+            groups.map((g) =>
+              h(
+                "details",
+                {
+                  class: "yyj-tree-group",
+                  key: g.key,
+                  // 分类内页默认展开当前分类；首页全部收起
+                  open: groups.length === 1,
+                },
+                [
+                  h("summary", { class: "yyj-tree-heading" }, [
+                    h("span", { class: "yyj-tree-title" }, g.title),
+                    h("span", { class: "yyj-tree-count" }, `${g.count}`),
+                  ]),
+                  h(
+                    "div",
+                    { class: "yyj-tree-items" },
+                    (g.indexItem ? [treeLink(g.indexItem, "概览")] : []).concat(
+                      g.items.map((i) => treeLink(i)),
+                    ),
+                  ),
+                ],
               ),
-            )
+            ),
+          )
 
     const tabs =
       groups.length > 0
