@@ -260,12 +260,9 @@ plugins:
             - { label: 首页, to: / }
             - { label: 技术手记, to: /tech/ }
             - { label: 业务与行业, to: /kb }
-            - { label: 资源与工具, to: /tools/ }
-            - { label: 关于, to: /about/ }
         - title: 相关资源
           items:
-            - { label: 写作指南, to: /about/writing-guide }
-            - { label: 组件演示, to: /about/components }
+            - { label: 资源与工具, to: /tools/ }
             - { label: GitHub 仓库, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
         - title: 关于与反馈
           items:
