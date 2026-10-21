@@ -208,8 +208,8 @@ plugins:
         - { label: 关于我们, to: /about/ }
       actions:
         - { label: GitHub, icon: github, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
-        - { label: 微信, image: /attachments/wechat-qr.webp }
-        - { label: QQ, image: /attachments/qq-qr.webp }
+        - { label: 微信, icon: wechat, image: /attachments/wechat-qr.webp }
+        - { label: QQ, icon: qq, image: /attachments/qq-qr.webp }
     layout:
       position: header
       priority: 10

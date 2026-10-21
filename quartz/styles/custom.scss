@@ -773,12 +773,18 @@ article {
 
 .yyj-qr {
   position: relative;
+  display: flex;
+  align-items: center;
+  height: 18px;
+  line-height: 1;
 
   > summary {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    line-height: 1;
     list-style: none;
     cursor: pointer;
-    font-size: 0.95rem;
-    line-height: 1.2;
     color: var(--darkgray);
     touch-action: manipulation;
     transition: color 140ms var(--yyj-ease-out);
