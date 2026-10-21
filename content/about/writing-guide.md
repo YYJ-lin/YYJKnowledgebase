@@ -20,12 +20,12 @@ content/
 │   └── index.md
 ├── industry/             ← 知识库分类：行业知识
 ├── tools/                ← 知识库分类：工具资源
-├── blog/                 ← 博客文章
+├── tech/                 ← 技术手记（按时间倒序）
 │   └── 2026-10-19-hello.md
 └── attachments/          ← 图片等附件
 ```
 
-**知识库文章 → `content/<分类>/<文件名>.md`，博客文章 → `content/blog/<日期>-<标题>.md`。**
+**知识库文章 → `content/<分类>/<文件名>.md`，技术手记 → `content/tech/<日期>-<标题>.md`。**
 
 文件名就是网址：`content/business/2026-q1-retro.md` 对应 `/business/2026-q1-retro`。
 
@@ -215,7 +215,7 @@ tags:
 ---
 ```
 
-博客文件放在 `content/blog/`，建议文件名用 `日期-短标题`，例如 `2026-10-20-first-deploy.md`。
+技术手记放在 `content/tech/`，建议文件名用 `日期-短标题`，例如 `2026-10-20-first-deploy.md`。
 
 ## 十四、本地预览与发布
 

@@ -15,7 +15,7 @@ description: 业务分享与行业知识 · 把业务里的判断、行业里的
     </button>
     <div class="hero-cta">
       <a class="btn btn-primary" href="./kb">进入知识库</a>
-      <a class="btn btn-ghost" href="./blog/">阅读博客</a>
+      <a class="btn btn-ghost" href="./tech/">技术手记</a>
     </div>
   </div>
 </div>

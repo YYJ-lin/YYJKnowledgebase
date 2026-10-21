@@ -209,9 +209,10 @@ plugins:
     enabled: true
     options:
       links:
-        - { label: 知识库, to: /kb }
-        - { label: 博客, to: /blog/ }
-        - { label: 关于我们, to: /about/ }
+        - { label: 技术手记, to: /tech/ }
+        - { label: 业务与行业, to: /kb }
+        - { label: 资源与工具, to: /tools/ }
+        - { label: 关于, to: /about/ }
       actions:
         - { label: GitHub, icon: github, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
         - { label: 微信, icon: wechat, image: /attachments/wechat-qr.webp }
@@ -257,10 +258,10 @@ plugins:
         - title: 内容导航
           items:
             - { label: 首页, to: / }
-            - { label: 业务分享, to: /business/ }
-            - { label: 行业知识, to: /industry/ }
-            - { label: 工具资源, to: /tools/ }
-            - { label: 博客, to: /blog/ }
+            - { label: 技术手记, to: /tech/ }
+            - { label: 业务与行业, to: /kb }
+            - { label: 资源与工具, to: /tools/ }
+            - { label: 关于, to: /about/ }
         - title: 相关资源
           items:
             - { label: 写作指南, to: /about/writing-guide }
@@ -277,6 +278,7 @@ plugins:
       legal:
         - { label: 联系, to: /contact/ }
         - { label: 隐私说明, to: /privacy/ }
+        - { label: 版权与许可, to: /license/ }
         - { label: RSS, to: /index.xml }
         - { label: 站点地图, to: /sitemap.xml }
       brand:

@@ -1,6 +1,8 @@
 ---
-title: 工具资源
+title: 资源与工具
 description: 常用工具、模板与配置集合
+nav: true
+navOrder: 3
 ---
 
 我自己在用的工具、模板和配置，整理成可以直接拿走的形式。

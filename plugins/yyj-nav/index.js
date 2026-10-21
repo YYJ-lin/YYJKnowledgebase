@@ -36,6 +36,10 @@ function siteRoot(cfg) {
   }
 }
 
+function toHref(slug) {
+  return slug.endsWith("/index") ? `/${slug.slice(0, -"/index".length)}/` : `/${slug}`
+}
+
 function renderIcon(name, size = 18) {
   const icon = ICONS[name]
   if (!icon) return null
@@ -150,6 +154,18 @@ function Nav(opts) {
     const currentSlug = fileData?.slug ?? ""
     const { groups, defaultTab } = buildTree(allFiles, currentSlug)
     const isTree = defaultTab === "tree"
+
+    // 顶栏项来自各分类 index.md 的 frontmatter：nav: true + navOrder
+    const navPages = (allFiles ?? [])
+      .filter((f) => f.frontmatter?.nav === true)
+      .sort(
+        (a, b) => (Number(a.frontmatter?.navOrder) || 99) - (Number(b.frontmatter?.navOrder) || 99),
+      )
+    const autoLinks = navPages.map((f) => ({
+      label: f.frontmatter?.navLabel ?? f.frontmatter?.title ?? f.slug,
+      to: toHref(f.slug),
+    }))
+    const navItems = autoLinks.length >= 2 ? autoLinks : links
 
     const navLink = (it) => {
       const external = typeof it.href === "string" && it.href.length > 0
@@ -284,7 +300,7 @@ function Nav(opts) {
           h(
             "div",
             { class: "yyj-mobile-links", "data-panel": "nav", hidden: isTree },
-            links.map(navLink),
+            navItems.map(navLink),
           ),
           actions.length > 0
             ? h(
@@ -296,7 +312,7 @@ function Nav(opts) {
           treeBody,
         ]),
       ]),
-      h("div", { class: "yyj-nav-links" }, links.map(navLink)),
+      h("div", { class: "yyj-nav-links" }, navItems.map(navLink)),
       actions.length > 0 ? h("div", { class: "yyj-nav-actions" }, actions.map(action)) : null,
     ])
   }
