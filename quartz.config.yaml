@@ -266,6 +266,10 @@ plugins:
           items:
             - { label: 关于本站, to: /about/ }
             - { label: 反馈与联系, href: "https://github.com/YYJ-lin/YYJKnowledgebase/issues" }
+      actions:
+        - { label: GitHub, icon: github, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
+        - { label: 微信, icon: wechat, image: /attachments/wechat-qr.webp }
+        - { label: QQ, icon: qq, image: /attachments/qq-qr.webp }
       brand:
         title: 云屿集
         tagline: 业务分享与行业知识
