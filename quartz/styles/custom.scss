@@ -1472,3 +1472,29 @@ footer .yyj-qr-panel {
   color: var(--yyj-brand);
   border-color: var(--yyj-brand);
 }
+
+// ---------- 关系图谱：放大、加高 ----------
+.graph,
+.graph > .graph-outer {
+  width: 100%;
+}
+
+.graph > .graph-outer {
+  height: 320px;
+  border-color: var(--yyj-line);
+  background: var(--light);
+}
+
+.graph > h3 {
+  font-size: 0.95rem;
+}
+
+.graph > .graph-outer > .global-graph-icon {
+  opacity: 0.75;
+}
+
+@media all and ($mobile) {
+  .graph > .graph-outer {
+    height: 260px;
+  }
+}
