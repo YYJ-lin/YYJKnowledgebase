@@ -94,6 +94,8 @@ Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：�
 - **侧边栏只显示当前分类**：explorer 的 `filterFn` 读当前 URL 的第一段来决定显示哪一类；首页和 `/kb` 显示完整目录；`tags` 永不进目录。
 - **`/kb` 是知识库汇总页**（`content/kb.md`），首页 Hero 的「进入知识库」指向它。
 - 想让侧边栏重新显示全部目录：删掉 `quartz.config.yaml` 里 explorer 的 `filterFn` 即可。
+- **顶栏**：本地组件 `plugins/yyj-nav`（知识库 / 博客 / 关于我们 / GitHub）+ 站点名 + 工具条，位于 `quartz/components/frames/DefaultFrame.tsx` 里的 `.topbar`（`grid-header` 区域横跨三列）。这是对上游 frame 的唯一改动。
+- **手机端（≤800px）**：grid 顺序为 顶栏 → 左栏 → 正文 → 右栏 → 页脚；顶栏两行（站点名 + 工具条 / 导航），左栏拉满宽度避免目录浮层溢出。
 
 ## 自检
 

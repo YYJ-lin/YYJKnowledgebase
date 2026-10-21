@@ -60,8 +60,10 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 7. **背景进程**：ssh 命令结束后 `nohup ... &` 会被回收，长期预览要用 systemd 用户服务。
 8. **wiki 链接按文件名/路径写**：`[[写作指南]]`（页面标题）会变成死链，必须写 `[[writing-guide]]` 或 `[[about/writing-guide|写作指南]]`。
 9. **不要给 `.sidebar` 加 `display:none`**：搜索弹层（`.search-container`）是 sidebar 的子元素，整栏隐藏会连搜索一起隐藏（点了没反应、输入框宽度为 0）。首页的做法是把 grid 改成单栏 + `grid-template-areas` 里保留 `grid-sidebar-left`，再让 `.sidebar.left` 横排贴右上，只隐藏其中的 `.page-title` / `.explorer`。
-10. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
-11. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
+10. **手机端目录浮层会溢出 16px**：`.explorer-content` 是 `position:absolute; width:100vw`，而 `#quartz-body` 在移动端有 `padding:0 1rem`，左栏因此偏移 1rem。修法是给移动端的 `.sidebar.left` 加 `margin:0 -1rem; padding-left/right:1rem` 让它拉满。
+11. **移动端 grid 顺序**：`$mobileGrid` 里 `grid-header` 要放在第一行，否则顶栏会跑到「探索」按钮下面。
+12. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
+13. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
 
 ## 六、日常发布
 
