@@ -88,6 +88,13 @@ Actions 跑完（约 1–2 分钟）自动更新线上站点。手动重跑：�
 
 行高亮 `{2,4}` 目前不支持，写了不报错也不生效。
 
+## 首页与侧边栏
+
+- **首页是单栏落地页**：`content/index.md` 里的 Hero（搜索框 + 两个入口）+「从这里开始」三卡；左目录树和右目录在首页不渲染（`quartz.config.yaml` 里 explorer / table-of-contents 的 `condition: not-index`），顶端保留搜索/主题/阅读模式工具条。
+- **侧边栏只显示当前分类**：explorer 的 `filterFn` 读当前 URL 的第一段来决定显示哪一类；首页和 `/kb` 显示完整目录；`tags` 永不进目录。
+- **`/kb` 是知识库汇总页**（`content/kb.md`），首页 Hero 的「进入知识库」指向它。
+- 想让侧边栏重新显示全部目录：删掉 `quartz.config.yaml` 里 explorer 的 `filterFn` 即可。
+
 ## 自检
 
 ```bash
