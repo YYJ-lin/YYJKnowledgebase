@@ -949,3 +949,53 @@ footer .yyj-qr-panel {
   left: 0;
   right: auto;
 }
+
+// 顶栏搜索按钮：做成一眼能看见的「输入框」样式（不在首页 Hero 里时）
+.topbar .search > .search-button {
+  height: 36px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--yyj-line);
+  border-radius: 300px;
+  background: var(--lightgray);
+  color: var(--darkgray);
+  font-size: 0.9rem;
+  transition:
+    border-color 140ms var(--yyj-ease-out),
+    background-color 140ms var(--yyj-ease-out),
+    color 140ms var(--yyj-ease-out);
+}
+
+.topbar .search > .search-button:hover {
+  border-color: var(--yyj-brand);
+  background: var(--light);
+  color: var(--darkgray);
+}
+
+.topbar .search > .search-button > p {
+  color: var(--darkgray);
+  font-size: 0.9rem;
+}
+
+.topbar .search > .search-button svg {
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+  margin: 0 0.45rem 0 0;
+}
+
+// 桌面端右侧提示快捷键（和首页 Hero 的搜索框一致）
+@media all and (min-width: 1101px) and (hover: hover) and (pointer: fine) {
+  .topbar .search > .search-button::after {
+    content: "Ctrl K";
+    margin-left: auto;
+    margin-right: 0;
+    padding: 0.05rem 0.35rem;
+    border: 1px solid var(--yyj-line);
+    border-radius: 4px;
+    background: var(--light);
+    font-family: var(--codeFont);
+    font-size: 0.68rem;
+    color: var(--yyj-muted);
+    line-height: 1.4;
+  }
+}
