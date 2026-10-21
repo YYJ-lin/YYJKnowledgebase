@@ -1,0 +1,37 @@
+{
+  "name": "@yyj/crumbs",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "云屿集面包屑：首页 › 知识库 › 分类 › 文章",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components": "./index.js"
+  },
+  "quartz": {
+    "name": "yyj-crumbs",
+    "displayName": "云屿集面包屑",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 5,
+    "defaultEnabled": true,
+    "components": {
+      "Crumbs": {
+        "displayName": "云屿集面包屑",
+        "defaultPosition": "beforeBody",
+        "defaultPriority": 5
+      }
+    },
+    "optionSchema": {
+      "libraryLabel": {
+        "type": "string"
+      },
+      "libraryPath": {
+        "type": "string"
+      }
+    }
+  }
+}

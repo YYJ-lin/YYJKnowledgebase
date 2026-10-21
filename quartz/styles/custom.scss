@@ -932,9 +932,10 @@ article {
   color: var(--yyj-brand);
 }
 
-// 卡片在网格里等高，「进入」贴底，三张卡的文字行才对得齐
-.card {
-  height: 100%;
+// 「进入」贴底对齐即可；不要给 .card 设 height:100%，
+// 它会在 auto 行高下把行撑成 165px 而内容 204px，相邻卡片叠在一起
+.card-more {
+  margin-top: auto;
 }
 
 // letter-spacing 会在最后一个字后面留空隙，居中时会整体偏左
@@ -1351,4 +1352,34 @@ footer .yyj-qr-panel {
 
 .yyj-tree-link:hover {
   background: var(--light);
+}
+
+// ---------- 面包屑 ----------
+.yyj-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--yyj-muted);
+}
+
+.yyj-crumb-link {
+  color: var(--yyj-muted);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--yyj-brand);
+  }
+}
+
+.yyj-crumb-sep {
+  color: var(--yyj-line-strong, var(--yyj-line));
+  opacity: 0.9;
+}
+
+.yyj-crumb-current {
+  color: var(--darkgray);
+  font-weight: 500;
 }
