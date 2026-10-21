@@ -27,6 +27,12 @@ navOrder: 4
 - [写作指南](writing-guide) —— 怎么发一篇文章
 - [组件演示](components) —— 内容里能用哪些组件
 
+## 本站说明
+
+- [联系](contact) —— 怎么找到我
+- [隐私说明](privacy) —— 本站收集什么、不收集什么
+- [版权与许可](license) —— 文章和代码分别怎么用
+
 ## 联系
 
 - GitHub：[github.com/YYJ-lin](https://github.com/YYJ-lin)

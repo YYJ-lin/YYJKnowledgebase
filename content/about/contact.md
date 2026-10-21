@@ -1,6 +1,7 @@
 ---
 title: 联系
 description: 怎么找到我：GitHub Issue、微信、QQ
+aliases: ["contact/index"]
 ---
 
 交流、纠错、合作都可以从这里开始。

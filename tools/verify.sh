@@ -13,7 +13,7 @@ pages=$(find "$PUB" -name '*.html' | wc -l)
 [ "$pages" -ge 10 ] && ok "生成 $pages 个页面" || bad "页面数量异常：$pages"
 
 echo "== 标题（front matter 是否生效）=="
-for pair in "index.html:云屿集" "about/index.html:关于云屿集" "business/index.html:业务分享" "kb.html:业务与行业" "tech/2026-10-19-hello.html:欢迎来到云屿集"; do
+for pair in "index.html:云屿集" "about/index.html:关于云屿集" "business/index.html:业务分享" "kb.html:知识库" "tech/2026-10-19-hello.html:欢迎来到云屿集"; do
   f="${pair%%:*}"; want="${pair#*:}"
   if grep -q "<title>$want" "$PUB/$f" 2>/dev/null; then ok "$f 标题含「$want」"; else bad "$f 标题不含「$want」"; fi
 done
