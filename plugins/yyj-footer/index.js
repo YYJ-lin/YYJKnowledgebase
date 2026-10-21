@@ -57,6 +57,7 @@ function Footer(opts) {
   const columns = opts?.columns ?? []
   const brand = opts?.brand ?? null
   const actions = opts?.actions ?? []
+  const legal = opts?.legal ?? []
 
   const Comp = ({ displayClass, cfg }) => {
     const root = siteRoot(cfg)
@@ -117,7 +118,6 @@ function Footer(opts) {
           actions.length > 0
             ? h("div", { class: "yyj-footer-actions" }, actions.map(action))
             : null,
-          h("p", { class: "yyj-footer-copy" }, `© ${year} ${brand.title ?? "云屿集"}`),
         ])
       : null
 
@@ -134,6 +134,33 @@ function Footer(opts) {
           ),
         ),
       ),
+      h("div", { class: "yyj-footer-legal" }, [
+        h("p", { class: "yyj-footer-copy" }, `© ${year} ${brand?.title ?? "云屿集"}`),
+        h(
+          "ul",
+          { class: "yyj-footer-legal-links" },
+          legal.map((it) => {
+            const external = typeof it.href === "string" && it.href.length > 0
+            return h(
+              "li",
+              { key: it.label },
+              h(
+                "a",
+                {
+                  href: external ? it.href : `${root}${it.to ?? "/"}`,
+                  ...(external ? { target: "_blank", rel: "noopener noreferrer" } : {}),
+                },
+                it.label,
+              ),
+            )
+          }),
+        ),
+        h(
+          "button",
+          { class: "yyj-to-top", type: "button", "aria-label": "回到顶部" },
+          "回到顶部 ↑",
+        ),
+      ]),
     ])
   }
 
@@ -152,6 +179,25 @@ function Footer(opts) {
       document.querySelectorAll("details.yyj-qr[open]").forEach((d) => d.removeAttribute("open"));
     }
   });
+
+  // 回到顶部
+  if (!window.__yyjTopBound) {
+    window.__yyjTopBound = true;
+    const sync = () => {
+      document.querySelectorAll(".yyj-to-top").forEach((b) => {
+        b.classList.toggle("is-visible", window.scrollY > 400);
+      });
+    };
+    window.addEventListener("scroll", sync, { passive: true });
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest && e.target.closest(".yyj-to-top");
+      if (!btn) return;
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.addEventListener("nav", sync);
+    sync();
+  }
 })();
 `
 

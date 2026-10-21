@@ -57,6 +57,12 @@ export default (() => {
             )}
           </>
         )}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={cfg.pageTitle}
+          href={new URL(`https://${cfg.baseUrl}/index.xml`).toString()}
+        />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <meta
           name="viewport"

@@ -274,6 +274,11 @@ plugins:
         - { label: GitHub, icon: github, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
         - { label: 微信, icon: wechat, image: /attachments/wechat-qr.webp }
         - { label: QQ, icon: qq, image: /attachments/qq-qr.webp }
+      legal:
+        - { label: 联系, to: /contact/ }
+        - { label: 隐私说明, to: /privacy/ }
+        - { label: RSS, to: /index.xml }
+        - { label: 站点地图, to: /sitemap.xml }
       brand:
         title: 云屿集
         tagline: 业务分享与行业知识
@@ -333,11 +338,6 @@ layout:
       direction: row
       gap: 0.5rem
   byPageType:
-    "404":
-      positions:
-        beforeBody: []
-        left: []
-        right: []
     content: {}
     folder:
       exclude:

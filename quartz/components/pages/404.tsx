@@ -6,10 +6,32 @@ const NotFound: QuartzComponent = ({ cfg, ctx }: QuartzComponentProps) => {
   const baseDir = ctx.argv.serve ? "/" : url.pathname
 
   return (
-    <article class="popover-hint">
+    <article class="popover-hint yyj-404">
       <h1>404</h1>
-      <p>{i18n(cfg.locale).pages.error.notFound}</p>
-      <a href={baseDir}>{i18n(cfg.locale).pages.error.home}</a>
+      <p>这一页不在了 —— 可能链接写错了，或者文章改过名字。</p>
+      <ul class="yyj-404-links">
+        <li>
+          <a href={baseDir}>首页</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/kb`}>知识库</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/business/`}>业务分享</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/industry/`}>行业知识</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/tools/`}>工具资源</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/blog/`}>博客</a>
+        </li>
+        <li>
+          <a href={`${baseDir}/about/`}>关于</a>
+        </li>
+      </ul>
       <script
         dangerouslySetInnerHTML={{
           __html: `
