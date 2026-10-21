@@ -999,3 +999,175 @@ footer .yyj-qr-panel {
     line-height: 1.4;
   }
 }
+
+// ---------- 手机端导航（菜单按钮） ----------
+.yyj-mobile-menu {
+  display: none;
+  position: relative;
+}
+
+.yyj-mobile-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: -0.4rem;
+  border-radius: 10px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--darkgray);
+  touch-action: manipulation;
+}
+
+.yyj-mobile-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.yyj-mobile-menu[open] > summary {
+  color: var(--yyj-brand);
+  background: var(--yyj-brand-soft);
+}
+
+.yyj-mobile-menu-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: -0.5rem;
+  z-index: 300;
+  width: min(78vw, 300px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  border: 1px solid var(--yyj-line);
+  border-radius: 14px;
+  background: var(--light);
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.16);
+}
+
+.yyj-mobile-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.yyj-mobile-links .yyj-nav-link {
+  padding: 0.7rem 0.6rem;
+  border-radius: 8px;
+  font-size: 1rem;
+
+  &.is-active {
+    background: var(--yyj-brand-soft);
+  }
+}
+
+.yyj-mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 0.6rem 0.6rem 0.3rem;
+  border-top: 1px solid var(--yyj-line);
+  margin-top: 0.3rem;
+}
+
+.yyj-mobile-actions .yyj-qr-panel {
+  left: 0;
+  right: auto;
+}
+
+// ---------- 手机端布局 ----------
+@media all and ($mobile) {
+  // 顶栏：菜单 | 站点名 | 工具条，一行搞定
+  .topbar header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "menu title tools";
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+  }
+
+  .topbar header > .yyj-nav {
+    grid-area: menu;
+    flex: none;
+  }
+
+  .topbar header > .page-title {
+    grid-area: title;
+    justify-self: center;
+  }
+
+  .topbar header > .flex-component {
+    grid-area: tools;
+    justify-self: end;
+  }
+
+  .yyj-mobile-menu {
+    display: block;
+  }
+
+  .yyj-nav-links,
+  .yyj-nav-actions {
+    display: none;
+  }
+
+  // 搜索在手机上收成纯图标按钮，省空间
+  .topbar .search > .search-button {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 10px;
+  }
+
+  .topbar .search > .search-button > p {
+    display: none;
+  }
+
+  .topbar .search > .search-button svg {
+    margin: 0;
+  }
+
+  .topbar .search > .search-button::after {
+    content: none;
+  }
+
+  // 手机端：关系图谱和反向链接不显示
+  .sidebar.right .graph,
+  .sidebar.right .backlinks {
+    display: none;
+  }
+
+  // 右栏没内容就别占位
+  .sidebar.right:not(:has(.toc)) {
+    display: none;
+  }
+}
+
+// ---------- 手机端：侧边栏（探索面板）与点击目标 ----------
+@media all and ($mobile) {
+  // 44px 以上才好点
+  .explorer-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .explorer-content {
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    overscroll-behavior: contain;
+  }
+
+  .explorer-content a,
+  .explorer-content .folder-title {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .yyj-mobile-links .yyj-nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 0 0.7rem;
+  }
+}

@@ -3,8 +3,8 @@ import { h } from "preact"
 /**
  * 云屿集顶部导航。
  *
- * - links：站内文字链接（知识库 / 博客 / 关于我们）
- * - actions：图标按钮（GitHub / 微信 / QQ），带 image 的会弹二维码
+ * 桌面：文字链接 + 图标（GitHub / 微信 / QQ，二维码用 <details> 展开）
+ * 手机：收进左上角的菜单按钮（<details>，无需 JS），顶栏只留 菜单 | 站点名 | 工具条
  *
  * 站内链接按 cfg.baseUrl 拼子路径，域名根和 GitHub Pages 项目页都成立。
  */
@@ -33,14 +33,6 @@ function siteRoot(cfg) {
   }
 }
 
-function isExternal(item) {
-  return typeof item.href === "string" && item.href.length > 0
-}
-
-function linkHref(item, root) {
-  return isExternal(item) ? item.href : `${root}${item.to ?? "/"}`
-}
-
 function renderIcon(name, size = 18) {
   const icon = ICONS[name]
   if (!icon) return null
@@ -58,6 +50,24 @@ function renderIcon(name, size = 18) {
   )
 }
 
+function burgerIcon() {
+  return h(
+    "svg",
+    {
+      width: 20,
+      height: 20,
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": 2,
+      "stroke-linecap": "round",
+      "aria-hidden": "true",
+      focusable: "false",
+    },
+    [h("path", { d: "M4 7h16" }), h("path", { d: "M4 12h16" }), h("path", { d: "M4 17h16" })],
+  )
+}
+
 function Nav(opts) {
   const links = opts?.links ?? []
   const actions = opts?.actions ?? []
@@ -67,7 +77,8 @@ function Nav(opts) {
     const current = fileData?.slug ? `/${fileData.slug}` : "/"
 
     const navLink = (it) => {
-      const external = isExternal(it)
+      const external = typeof it.href === "string" && it.href.length > 0
+      const href = external ? it.href : `${root}${it.to ?? "/"}`
       const active =
         !external &&
         (it.to === "/"
@@ -77,7 +88,7 @@ function Nav(opts) {
         "a",
         {
           key: it.label,
-          href: linkHref(it, root),
+          href,
           class: active ? "yyj-nav-link is-active" : "yyj-nav-link",
           ...(external ? { target: "_blank", rel: "noopener noreferrer" } : {}),
         },
@@ -88,8 +99,7 @@ function Nav(opts) {
     const action = (it) => {
       const icon = renderIcon(it.icon)
 
-      // 带二维码的图标按钮：<details> 原生折叠，无需 JS
-      if (it.image) {
+      if (it.image && icon) {
         return h("details", { class: "yyj-qr", name: "yyj-qr", key: it.label }, [
           h("summary", { "aria-label": `${it.label}二维码`, title: `${it.label}二维码` }, icon),
           h("div", { class: "yyj-qr-panel" }, [
@@ -105,47 +115,57 @@ function Nav(opts) {
         ])
       }
 
-      // 图标链接（GitHub）
-      if (icon) {
-        return h(
-          "a",
-          {
-            key: it.label,
-            class: "yyj-nav-icon",
-            href: linkHref(it, root),
-            "aria-label": it.label,
-            title: it.label,
-            ...(isExternal(it) ? { target: "_blank", rel: "noopener noreferrer" } : {}),
-          },
-          icon,
-        )
-      }
-
-      return h("a", { key: it.label, class: "yyj-nav-link", href: linkHref(it, root) }, it.label)
+      const external = typeof it.href === "string" && it.href.length > 0
+      return h(
+        "a",
+        {
+          key: it.label,
+          class: "yyj-icon",
+          href: external ? it.href : `${root}${it.to ?? "/"}`,
+          "aria-label": it.label,
+          title: it.label,
+          ...(external ? { target: "_blank", rel: "noopener noreferrer" } : {}),
+        },
+        icon,
+      )
     }
 
-    return h(
-      "nav",
-      { class: `yyj-nav ${displayClass ?? ""}`.trim(), "aria-label": "主导航" },
-      [h("div", { class: "yyj-nav-links" }, links.map(navLink))].concat(
-        actions.length > 0 ? [h("div", { class: "yyj-nav-actions" }, actions.map(action))] : [],
-      ),
-    )
+    return h("nav", { class: `yyj-nav ${displayClass ?? ""}`.trim(), "aria-label": "主导航" }, [
+      // 手机端：菜单按钮
+      h("details", { class: "yyj-mobile-menu", name: "yyj-mobile-menu" }, [
+        h("summary", { "aria-label": "菜单", title: "菜单" }, burgerIcon()),
+        h("div", { class: "yyj-mobile-menu-panel" }, [
+          h("div", { class: "yyj-mobile-links" }, links.map(navLink)),
+          actions.length > 0
+            ? h("div", { class: "yyj-mobile-actions" }, actions.map(action))
+            : null,
+        ]),
+      ]),
+      // 桌面端：横排链接 + 图标
+      h("div", { class: "yyj-nav-links" }, links.map(navLink)),
+      actions.length > 0 ? h("div", { class: "yyj-nav-actions" }, actions.map(action)) : null,
+    ])
   }
 
-  // 点空白处 / Esc 收起二维码面板
+  // 点空白处 / Esc 收起二维码面板与手机菜单
   Comp.afterDOMLoaded = `
 (() => {
-  if (window.__yyjQrBound) return;
-  window.__yyjQrBound = true;
-  document.addEventListener("click", (e) => {
-    document.querySelectorAll("details.yyj-qr[open]").forEach((d) => {
-      if (!d.contains(e.target)) d.removeAttribute("open");
+  if (window.__yyjNavBound) return;
+  window.__yyjNavBound = true;
+  const closeOthers = (target) => {
+    document.querySelectorAll("details.yyj-qr[open], details.yyj-mobile-menu[open]").forEach((d) => {
+      if (!d.contains(target)) d.removeAttribute("open");
     });
+  };
+  document.addEventListener("click", (e) => closeOthers(e.target));
+  document.addEventListener("nav", () => {
+    document.querySelectorAll("details.yyj-mobile-menu[open]").forEach((d) => d.removeAttribute("open"));
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      document.querySelectorAll("details.yyj-qr[open]").forEach((d) => d.removeAttribute("open"));
+      document.querySelectorAll("details.yyj-qr[open], details.yyj-mobile-menu[open]").forEach((d) =>
+        d.removeAttribute("open"),
+      );
     }
   });
 })();
