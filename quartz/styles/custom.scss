@@ -1089,6 +1089,9 @@ footer .yyj-qr-panel {
   .topbar header > .yyj-nav {
     grid-area: menu;
     flex: none;
+    // 之前为了横滑给 .yyj-nav 加过 overflow-x: auto，
+    // 那会把菜单面板裁在 40px 高的区域里（点了像没反应）
+    overflow: visible;
   }
 
   .topbar header > .page-title {
