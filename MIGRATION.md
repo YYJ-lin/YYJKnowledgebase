@@ -62,9 +62,10 @@ tools/deploy.sh          首次部署：检查远端仓库并 push
 9. **不要给 `.sidebar` 加 `display:none`**：搜索弹层（`.search-container`）是 sidebar 的子元素，整栏隐藏会连搜索一起隐藏（点了没反应、输入框宽度为 0）。首页的做法是把 grid 改成单栏 + `grid-template-areas` 里保留 `grid-sidebar-left`，再让 `.sidebar.left` 横排贴右上，只隐藏其中的 `.page-title` / `.explorer`。
 10. **手机端目录浮层会溢出 16px**：`.explorer-content` 是 `position:absolute; width:100vw`，而 `#quartz-body` 在移动端有 `padding:0 1rem`，左栏因此偏移 1rem。修法是给移动端的 `.sidebar.left` 加 `margin:0 -1rem; padding-left/right:1rem` 让它拉满。
 11. **搜索弹层「偏了」= 祖先元素有 transform / backdrop-filter**：它们会成为 的包含块，弹层就从那个元素左上角开始铺。顶栏毛玻璃因此改到 上，居中也不能用 ，改用 。
-12. **移动端 grid 顺序**：`$mobileGrid` 里 `grid-header` 要放在第一行，否则顶栏会跑到「探索」按钮下面。
-13. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
-14. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
+12. **改了本地插件要清缓存**： 是构建时拷进去的副本，改完 不删它会继续用旧代码（现象：CSS 变了但组件结构没变）。 再 build。
+13. **移动端 grid 顺序**：`$mobileGrid` 里 `grid-header` 要放在第一行，否则顶栏会跑到「探索」按钮下面。
+14. **Mermaid 是浏览器端渲染**：脚本从 `cdnjs.cloudflare.com` 懒加载（只在含图页面触发，约 26 个请求），静态 HTML 里只有 `<code class="mermaid">`，别在构建产物里找 SVG。
+15. **GitHub Pages 第一次必须手动启用**：`configure-pages` 的 `enablement: true` 需要仓库管理员权限，`GITHUB_TOKEN` 没有，会 403。
 
 ## 六、日常发布
 
