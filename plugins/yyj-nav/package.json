@@ -1,0 +1,32 @@
+{
+  "name": "@yyj/nav",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "云屿集顶部导航：知识库 / 博客 / 关于我们 + GitHub",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components": "./index.js"
+  },
+  "quartz": {
+    "name": "yyj-nav",
+    "displayName": "云屿集导航",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 40,
+    "defaultEnabled": true,
+    "components": {
+      "Nav": {
+        "displayName": "云屿集导航",
+        "defaultPosition": "header",
+        "defaultPriority": 10
+      }
+    },
+    "optionSchema": {
+      "links": { "type": "array" }
+    }
+  }
+}

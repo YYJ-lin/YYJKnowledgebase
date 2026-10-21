@@ -143,37 +143,135 @@ article {
   color: var(--darkgray);
 }
 
+// ---------- 通栏顶栏（站点名 + 主导航 + 工具条） ----------
+.topbar {
+  grid-area: grid-header;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--yyj-line);
+  background: color-mix(in srgb, var(--light) 92%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.topbar-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0.65rem 1.5rem;
+}
+
+.topbar header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  gap: 1.25rem;
+  flex-wrap: nowrap;
+}
+
+.topbar header > * {
+  flex: 0 0 auto;
+}
+
+.topbar header > .yyj-nav {
+  flex: 1 1 auto;
+}
+
+.topbar .page-title {
+  flex: none;
+  margin: 0;
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.topbar .page-title a {
+  color: var(--dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.yyj-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex: 1;
+}
+
+.yyj-nav-link {
+  font-size: 0.95rem;
+  color: var(--darkgray);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--yyj-brand);
+  }
+
+  &.is-active {
+    color: var(--yyj-brand);
+    font-weight: 500;
+  }
+}
+
+@media all and ($mobile) {
+  .topbar-inner {
+    padding: 0.55rem 1rem;
+  }
+
+  // 手机端顶栏两行：站点名 + 工具条 / 导航链接
+  .topbar header {
+    flex-wrap: wrap;
+    gap: 0.45rem 0.75rem;
+  }
+
+  .topbar header > .page-title {
+    order: 1;
+  }
+
+  .topbar header > .flex-component {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .topbar header > .yyj-nav {
+    order: 3;
+    flex: 1 1 100%;
+    gap: 1rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .yyj-nav-link {
+    font-size: 0.9rem;
+  }
+
+  // 手机端左栏拉满宽度，避免目录浮层（absolute，宽度 100vw）右侧被挤出 16px
+  .page > #quartz-body .sidebar.left {
+    margin: 0 -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 // ---------- 首页（对齐旧站：无侧栏的落地页） ----------
 body[data-slug="index"] {
   .page > #quartz-body {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto;
     grid-template-areas:
-      "grid-sidebar-left"
       "grid-header"
       "grid-center"
       "grid-footer";
     padding: 0 1.5rem;
   }
 
-  // 左栏只剩工具条（搜索/主题/阅读模式），横排贴右上；目录树和站点名隐藏
-  // 注意：不能把 .sidebar 整个 display:none，搜索弹层是它的子元素，会被一起隐藏
-  .sidebar.left {
-    position: static;
-    height: auto;
-    padding: 1.25rem 0 0;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.6rem;
-  }
-
-  .sidebar.left .page-title,
-  .sidebar.left .explorer,
-  .sidebar.left .spacer {
-    display: none;
-  }
-
+  // 搜索/主题/阅读模式已经挪到顶栏，首页可以整块隐藏侧栏
+  .sidebar.left,
   .sidebar.right {
     display: none;
   }

@@ -170,8 +170,8 @@ plugins:
   - source: "@quartz-community/search"
     enabled: true
     layout:
-      position: left
-      priority: 20
+      position: header
+      priority: 30
       group: toolbar
       groupOptions:
         grow: true
@@ -196,22 +196,33 @@ plugins:
     layout:
       position: beforeBody
       priority: 30
+  - source: "./plugins/yyj-nav"
+    enabled: true
+    options:
+      links:
+        - { label: 知识库, to: /kb }
+        - { label: 博客, to: /blog/ }
+        - { label: 关于我们, to: /about/ }
+        - { label: GitHub, href: "https://github.com/YYJ-lin/YYJKnowledgebase" }
+    layout:
+      position: header
+      priority: 10
   - source: "@quartz-community/page-title"
     enabled: true
     layout:
-      position: left
-      priority: 10
+      position: header
+      priority: 5
   - source: "@quartz-community/darkmode"
     enabled: true
     layout:
-      position: left
-      priority: 30
+      position: header
+      priority: 20
       group: toolbar
   - source: "@quartz-community/reader-mode"
     enabled: true
     layout:
-      position: left
-      priority: 35
+      position: header
+      priority: 25
       group: toolbar
   - source: "@quartz-community/breadcrumbs"
     enabled: true
