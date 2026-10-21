@@ -1245,3 +1245,19 @@ footer .yyj-qr-panel {
     display: none;
   }
 }
+
+.yyj-tree-group + .yyj-tree-group {
+  margin-top: 0.35rem;
+}
+
+.yyj-tree-heading {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.5rem 0.7rem 0.25rem;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--yyj-muted);
+}

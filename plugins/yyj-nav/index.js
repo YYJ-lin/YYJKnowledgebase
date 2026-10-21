@@ -4,10 +4,9 @@ import { h } from "preact"
  * 云屿集顶部导航。
  *
  * 桌面：文字链接 + 图标（GitHub / 微信 / QQ，二维码用 <details> 展开）
- * 手机：一个菜单按钮，里面两个标签页——
+ * 手机：一个菜单按钮，两个标签页
  *   「导航」站点栏目 + 图标
- *   「目录」当前分类下的文章列表（等价于桌面左侧的目录树）
- * 两者合并在同一个菜单里，不再单独一个「探索」按钮。
+ *   「目录」文章列表：在分类里显示本分类，在首页/知识库显示全部分类
  */
 
 const GITHUB_PATH =
@@ -24,6 +23,9 @@ const ICONS = {
   wechat: { path: WECHAT_PATH, viewBox: "0 0 24 24" },
   qq: { path: QQ_PATH, viewBox: "0 0 24 24" },
 }
+
+// 分类顺序（和侧栏 sortFn 保持一致），新的分类按名字排在后面
+const SECTION_RANK = { business: 1, industry: 2, tools: 3, about: 4, blog: 5 }
 
 function siteRoot(cfg) {
   const baseUrl = cfg?.baseUrl ?? ""
@@ -69,29 +71,64 @@ function burgerIcon() {
   )
 }
 
-/** 当前分类下的文章（从 allFiles 里挑），用于手机菜单的「目录」标签页 */
-function sectionEntries(allFiles, currentSlug) {
-  const section = currentSlug.includes("/") ? currentSlug.split("/")[0] : null
-  if (!section) return []
+function sortItems(items) {
+  return [...items].sort((a, b) => {
+    if (a.isIndex !== b.isIndex) return a.isIndex ? -1 : 1
+    return String(a.title).localeCompare(String(b.title), "zh-Hans-CN")
+  })
+}
 
-  return (allFiles ?? [])
+/**
+ * 菜单里的「目录」数据。
+ * - 在某个分类里：只列这个分类的文章
+ * - 在首页 / 知识库：列出全部分类（每个分类一个小标题 + 文章）
+ */
+function buildTree(allFiles, currentSlug) {
+  const entries = (allFiles ?? [])
     .filter((f) => {
       const slug = f.slug
-      if (!slug || slug === "index") return false
-      if (slug.split("/")[0] !== section) return false
-      if (slug.startsWith("tags")) return false
-      return true
+      return slug && slug !== "index" && slug !== "404" && !slug.startsWith("tags")
     })
     .map((f) => ({
       slug: f.slug,
       title: f.frontmatter?.title ?? f.slug,
-      depth: f.slug.split("/").length - 2,
       isIndex: f.slug.endsWith("/index"),
+      segments: f.slug.split("/"),
     }))
-    .sort((a, b) => {
-      if (a.isIndex !== b.isIndex) return a.isIndex ? -1 : 1
-      return String(a.title).localeCompare(String(b.title), "zh-Hans-CN")
+
+  const section = currentSlug.includes("/") ? currentSlug.split("/")[0] : null
+
+  if (section) {
+    const items = sortItems(entries.filter((e) => e.segments[0] === section))
+    return items.length > 0
+      ? { groups: [{ key: section, title: null, items }], defaultTab: "nav" }
+      : { groups: [], defaultTab: "nav" }
+  }
+
+  const bySection = new Map()
+  for (const e of entries) {
+    // 单段 slug 是顶层页面（kb 之类），单独归到「页面」
+    const key = e.segments.length > 1 ? e.segments[0] : "__pages"
+    if (!bySection.has(key)) bySection.set(key, [])
+    bySection.get(key).push(e)
+  }
+
+  const groups = [...bySection.entries()]
+    .map(([key, items]) => {
+      const sorted = sortItems(items)
+      const indexItem = sorted.find((i) => i.isIndex) ?? null
+      return {
+        key,
+        title: key === "__pages" ? "页面" : (indexItem?.title ?? key),
+        indexItem,
+        rank: key === "__pages" ? 99 : (SECTION_RANK[key] ?? 90),
+        // 分类首页做成小标题链接，正文列表里不再重复
+        items: sorted.filter((i) => !i.isIndex),
+      }
     })
+    .sort((a, b) => a.rank - b.rank || String(a.title).localeCompare(String(b.title), "zh"))
+
+  return { groups, defaultTab: groups.length > 0 ? "tree" : "nav" }
 }
 
 function Nav(opts) {
@@ -102,7 +139,8 @@ function Nav(opts) {
     const root = siteRoot(cfg)
     const current = fileData?.slug ? `/${fileData.slug}` : "/"
     const currentSlug = fileData?.slug ?? ""
-    const tree = sectionEntries(allFiles, currentSlug)
+    const { groups, defaultTab } = buildTree(allFiles, currentSlug)
+    const isTree = defaultTab === "tree"
 
     const navLink = (it) => {
       const external = typeof it.href === "string" && it.href.length > 0
@@ -158,16 +196,59 @@ function Nav(opts) {
       )
     }
 
+    const treeLink = (item) =>
+      h(
+        "a",
+        {
+          key: item.slug,
+          href: `${root}/${item.slug}`,
+          class: item.slug === currentSlug ? "yyj-tree-link is-active" : "yyj-tree-link",
+        },
+        item.title,
+      )
+
+    const treeBody =
+      groups.length === 0
+        ? null
+        : groups.length === 1 && groups[0].title === null
+          ? h(
+              "div",
+              { class: "yyj-tree", "data-panel": "tree", hidden: !isTree },
+              groups[0].items.map(treeLink),
+            )
+          : h(
+              "div",
+              { class: "yyj-tree", "data-panel": "tree", hidden: !isTree },
+              groups.map((g) =>
+                h("div", { class: "yyj-tree-group", key: g.key }, [
+                  g.indexItem
+                    ? h(
+                        "a",
+                        {
+                          class:
+                            g.indexItem.slug === currentSlug
+                              ? "yyj-tree-heading is-active"
+                              : "yyj-tree-heading",
+                          href: `${root}/${g.indexItem.slug}`,
+                        },
+                        g.title,
+                      )
+                    : h("div", { class: "yyj-tree-heading" }, g.title),
+                  ...g.items.map(treeLink),
+                ]),
+              ),
+            )
+
     const tabs =
-      tree.length > 0
+      groups.length > 0
         ? h("div", { class: "yyj-tabs", role: "tablist" }, [
             h(
               "button",
               {
                 type: "button",
-                class: "yyj-tab is-active",
+                class: isTree ? "yyj-tab" : "yyj-tab is-active",
                 role: "tab",
-                "aria-selected": "true",
+                "aria-selected": isTree ? "false" : "true",
                 "data-target": "nav",
               },
               "导航",
@@ -176,9 +257,9 @@ function Nav(opts) {
               "button",
               {
                 type: "button",
-                class: "yyj-tab",
+                class: isTree ? "yyj-tab is-active" : "yyj-tab",
                 role: "tab",
-                "aria-selected": "false",
+                "aria-selected": isTree ? "true" : "false",
                 "data-target": "tree",
               },
               "目录",
@@ -191,29 +272,19 @@ function Nav(opts) {
         h("summary", { "aria-label": "菜单", title: "菜单" }, burgerIcon()),
         h("div", { class: "yyj-mobile-menu-panel" }, [
           tabs,
-          h("div", { class: "yyj-mobile-links", "data-panel": "nav" }, links.map(navLink)),
+          h(
+            "div",
+            { class: "yyj-mobile-links", "data-panel": "nav", hidden: isTree },
+            links.map(navLink),
+          ),
           actions.length > 0
-            ? h("div", { class: "yyj-mobile-actions", "data-panel": "nav" }, actions.map(action))
-            : null,
-          tree.length > 0
             ? h(
                 "div",
-                { class: "yyj-tree", "data-panel": "tree", hidden: true },
-                tree.map((item) =>
-                  h(
-                    "a",
-                    {
-                      key: item.slug,
-                      href: `${root}/${item.slug}`,
-                      class:
-                        item.slug === currentSlug ? "yyj-tree-link is-active" : "yyj-tree-link",
-                      style: `padding-left: ${0.7 + Math.max(0, item.depth) * 0.9}rem`,
-                    },
-                    item.title,
-                  ),
-                ),
+                { class: "yyj-mobile-actions", "data-panel": "nav", hidden: isTree },
+                actions.map(action),
               )
             : null,
+          treeBody,
         ]),
       ]),
       h("div", { class: "yyj-nav-links" }, links.map(navLink)),
