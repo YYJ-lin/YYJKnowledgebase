@@ -73,6 +73,7 @@ plugins:
     layout:
       position: right
       priority: 30
+      condition: not-index
   - source: "@quartz-community/crawl-links"
     enabled: true
     options:
@@ -143,9 +144,24 @@ plugins:
           if (a.isFolder !== b.isFolder) return a.isFolder ? -1 : 1;
           return (a.displayName || "").localeCompare(b.displayName || "", void 0, { numeric: true });
         }
+      filterFn: |-
+        (node) => {
+          const base = (document.body.dataset.basepath || "").replace(/\/+$/, "");
+          let path = window.location.pathname;
+          if (base && path.startsWith(base)) path = path.slice(base.length);
+          const section = path.split("/").filter(Boolean)[0];
+          const segs = node.slugSegments || [];
+          // 标签页永远不进目录
+          if (segs[0] === "tags") return false;
+          // 首页/知识库页显示完整目录，其余页面只看当前分类
+          if (segs.length === 0) return true;
+          if (!section || section === "kb") return true;
+          return segs[0] === section;
+        }
     layout:
       position: left
       priority: 50
+      condition: not-index
   - source: "@quartz-community/graph"
     enabled: false
     layout:
