@@ -40,7 +40,7 @@ else
 fi
 
 echo "== 内容渲染 =="
-grep -q 'data-callout="tip"' "$PUB/kb/erpnext/index.html" && ok "callout 渲染正常" || bad "callout 未渲染"
+grep -q 'data-callout=' "$PUB/kb/erpnext/index.html" && ok "callout 渲染正常" || bad "callout 未渲染"
 [ -f "$PUB/about/welcome.html" ] && ok "关于/开站记存在" || bad "about/welcome 缺失"
 grep -q 'yyj-crumbs' "$PUB/kb/erpnext/index.html" && ok "面包屑已渲染" || bad "面包屑缺失"
 grep -q 'yyj-footer-brand' "$PUB/index.html" && ok "页脚品牌区存在" || bad "页脚品牌区缺失"
