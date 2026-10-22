@@ -6,14 +6,14 @@
 
 站点从 Docusaurus 迁到 **Quartz 5**，已上线：https://yyj-lin.github.io/YYJKnowledgebase/
 
-| 项     | 状态                                                                |
-| ------ | ------------------------------------------------------------------- |
-| 框架   | Quartz 5（Gitee 镜像克隆，`upstream` 指向镜像，`origin` 是 GitHub） |
-| 内容   | `content/` 下 11 篇 md，4 个分类 + 关于                             |
-| 品牌   | 自托管 IBM Plex Sans / JetBrains Mono，知识蓝配色，日夜两套         |
-| 布局   | 通栏顶栏 + 左目录 + 居中正文 + 右目录/图谱 + 四列页脚               |
-| 手机端 | 顶栏收成一行，「导航 / 目录」两个页签，目录按分类折叠带篇数         |
-| 部署   | GitHub Actions → Pages，push `main` 即发布                          |
+| 项     | 状态                                                                    |
+| ------ | ----------------------------------------------------------------------- |
+| 框架   | Quartz 5（Gitee 镜像克隆，`upstream` 指向镜像，`origin` 是 GitHub）     |
+| 内容   | 技术手记 / 知识库（erpnext·wordpress·apps·industry）/ 资源与工具 / 关于 |
+| 品牌   | 自托管 IBM Plex Sans / JetBrains Mono，知识蓝配色，日夜两套             |
+| 布局   | 通栏顶栏 + 左目录 + 居中正文 + 右目录/图谱 + 四列页脚                   |
+| 手机端 | 顶栏收成一行，「导航 / 目录」两个页签，目录按分类折叠带篇数             |
+| 部署   | GitHub Actions → Pages，push `main` 即发布                              |
 
 ## 二、结构决策（别轻易改）
 
@@ -58,7 +58,7 @@ journalctl --user -u yyj-quartz-preview -n 50
 - [ ] `/services/` 单页（技术博客为主，获客只留一个触点）
 - [ ] `/archive/` 归档页（文章 ≥20 篇再做）
 - [ ] giscus 评论、Umami 统计（按需，需要外部账号）
-- [ ] 二级分类（`tech/erpnext/` 这类）：菜单目录目前只按一级分组，需要再加一层折叠
+- [x] 知识库二级分类（kb/erpnext 等）：骨架已建，菜单里同组平铺
 
 ## 六、回滚
 

@@ -83,8 +83,10 @@ function sortItems(items) {
 }
 
 /**
- * 菜单「目录」的数据：按分类分组，每组带篇数。
- * 分类页里只保留当前分类；首页/知识库列出全部分类。
+ * 菜单「目录」的数据：按一级目录分组，每组带篇数。
+ * - 首页 / 知识库这类没有具体分类的页面：列出全部分组
+ * - 在某个分类里：只保留当前那一组
+ * 组内只把「本组的 index」当标题，嵌套的子分类首页（kb/erpnext 等）保留为链接。
  */
 function buildTree(allFiles, currentSlug) {
   const entries = (allFiles ?? [])
@@ -99,26 +101,6 @@ function buildTree(allFiles, currentSlug) {
       segments: f.slug.split("/"),
     }))
 
-  const section = currentSlug.includes("/") ? currentSlug.split("/")[0] : null
-
-  if (section) {
-    const items = sortItems(entries.filter((e) => e.segments[0] === section))
-    if (items.length === 0) return { groups: [], section: null, defaultTab: "nav" }
-    return {
-      groups: [
-        {
-          key: section,
-          title: items.find((i) => i.isIndex)?.title ?? section,
-          indexItem: items.find((i) => i.isIndex) ?? null,
-          items: items.filter((i) => !i.isIndex),
-          count: items.length,
-        },
-      ],
-      section,
-      defaultTab: "nav",
-    }
-  }
-
   const bySection = new Map()
   for (const e of entries) {
     const key = e.segments.length > 1 ? e.segments[0] : "__pages"
@@ -126,11 +108,9 @@ function buildTree(allFiles, currentSlug) {
     bySection.get(key).push(e)
   }
 
-  const groups = [...bySection.entries()]
+  const all = [...bySection.entries()]
     .map(([key, items]) => {
       const sorted = sortItems(items)
-      const indexItem = sorted.find((i) => i.isIndex) ?? null
-      // 只把「本组的 index」当标题，嵌套的子分类首页（如 kb/business）保留为链接
       const ownSlug = key === "__pages" ? null : `${key}/index`
       const own = ownSlug ? (sorted.find((i) => i.slug === ownSlug) ?? null) : null
       return {
@@ -144,7 +124,10 @@ function buildTree(allFiles, currentSlug) {
     })
     .sort((a, b) => a.rank - b.rank || String(a.title).localeCompare(String(b.title), "zh"))
 
-  return { groups, section: null, defaultTab: groups.length > 0 ? "tree" : "nav" }
+  const section = currentSlug.includes("/") ? currentSlug.split("/")[0] : null
+  const groups = section ? all.filter((g) => g.key === section) : all
+
+  return { groups, section, defaultTab: section ? "nav" : groups.length > 0 ? "tree" : "nav" }
 }
 
 function Nav(opts) {
