@@ -1629,3 +1629,99 @@ footer .yyj-qr-panel {
   font-size: 0.7rem;
   line-height: 1.6;
 }
+
+// ---------- 右侧目录：与左侧栏同一套风格 ----------
+.sidebar.right {
+  padding-top: 2.5rem;
+}
+
+.toc {
+  width: 100%;
+}
+
+.toc > .toc-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 8px 8px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.toc > .toc-header h3 {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--yyj-muted);
+}
+
+.toc > .toc-header .fold {
+  margin-left: auto;
+  width: 14px;
+  height: 14px;
+  color: var(--yyj-muted);
+  transition: transform 160ms var(--yyj-ease-out);
+}
+
+.toc.collapsed > .toc-header .fold {
+  transform: rotate(-90deg);
+}
+
+.toc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: calc(100vh - 22rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.toc-content li {
+  margin: 0;
+  list-style: none;
+}
+
+.toc-content li > a {
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  color: var(--darkgray);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition:
+    background-color 140ms var(--yyj-ease-out),
+    color 140ms var(--yyj-ease-out);
+}
+
+.toc-content li.depth-1 > a {
+  padding-left: 18px;
+  font-size: 0.82rem;
+  color: var(--yyj-muted);
+}
+
+.toc-content li.depth-2 > a {
+  padding-left: 30px;
+  font-size: 0.8rem;
+  color: var(--yyj-muted);
+}
+
+.toc-content li > a:hover {
+  background: color-mix(in srgb, var(--lightgray) 80%, transparent);
+  color: var(--dark);
+}
+
+.toc-content li > a.in-view {
+  background: var(--yyj-brand-soft);
+  color: var(--yyj-brand);
+  font-weight: 500;
+  box-shadow: inset 2px 0 0 var(--yyj-brand);
+}
