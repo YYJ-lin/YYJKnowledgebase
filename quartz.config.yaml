@@ -315,6 +315,9 @@ plugins:
       position: beforeBody
       priority: 15
       display: all
+
+  - source: "./plugins/yyj-cn-props"
+    enabled: true
   - source: "@quartz-community/unlisted-pages"
     enabled: true
     options: {}

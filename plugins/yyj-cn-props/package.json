@@ -1,0 +1,23 @@
+{
+  "name": "@yyj/cn-props",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "允许在 frontmatter 里写中文属性名（标题、描述、日期…），构建时映射成 Quartz 认识的英文键",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components": "./index.js"
+  },
+  "quartz": {
+    "name": "cn-props",
+    "displayName": "中文属性名",
+    "category": "transformer",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 12,
+    "defaultEnabled": true,
+    "optionSchema": {}
+  }
+}
