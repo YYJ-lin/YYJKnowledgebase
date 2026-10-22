@@ -269,7 +269,7 @@ plugins:
           items:
             - { label: 首页, to: / }
             - { label: 技术手记, to: /tech/ }
-            - { label: 知识库, to: /kb }
+            - { label: 知识库, to: /kb/ }
         - title: 相关资源
           items:
             - { label: 资源与工具, to: /tools/ }
