@@ -8,8 +8,8 @@ navOrder: 2
 按主题整理的业务笔记与行业常识。挑一个入口开始：
 
 <div class="cards">
-<a class="card" href="../business/"><span class="card-title">业务分享</span><span class="card-desc">项目复盘、方法论，以及真实场景里的取舍。</span><span class="card-more">进入 →</span></a>
-<a class="card" href="../industry/"><span class="card-title">行业知识</span><span class="card-desc">术语、政策、案例，以及行业里的常识。</span><span class="card-more">进入 →</span></a>
+<a class="card" href="./business/"><span class="card-title">业务分享</span><span class="card-desc">项目复盘、方法论，以及真实场景里的取舍。</span><span class="card-more">进入 →</span></a>
+<a class="card" href="./industry/"><span class="card-title">行业知识</span><span class="card-desc">术语、政策、案例，以及行业里的常识。</span><span class="card-more">进入 →</span></a>
 </div>
 
 ## 怎么读

@@ -13,7 +13,7 @@ pages=$(find "$PUB" -name '*.html' | wc -l)
 [ "$pages" -ge 10 ] && ok "生成 $pages 个页面" || bad "页面数量异常：$pages"
 
 echo "== 标题（front matter 是否生效）=="
-for pair in "index.html:云屿集" "about/index.html:关于云屿集" "business/index.html:业务分享" "kb.html:知识库" "about/welcome.html:开站记"; do
+for pair in "index.html:云屿集" "about/index.html:关于云屿集" "kb/business/index.html:业务分享" "kb/index.html:知识库" "about/welcome.html:开站记"; do
   f="${pair%%:*}"; want="${pair#*:}"
   if grep -q "<title>$want" "$PUB/$f" 2>/dev/null; then ok "$f 标题含「$want」"; else bad "$f 标题不含「$want」"; fi
 done
@@ -28,7 +28,7 @@ n=$(ls "$PUB"/static/fonts/*.woff2 2>/dev/null | wc -l)
 [ "$n" -ge 5 ] && ok "自托管字体 $n 个 woff2" || bad "字体文件缺失（$n）"
 
 echo "== 页脚 =="
-if grep -q "yyj-footer-grid" "$PUB/index.html" && grep -q "yyj-footer-grid" "$PUB/business/index.html"; then
+if grep -q "yyj-footer-grid" "$PUB/index.html" && grep -q "yyj-footer-grid" "$PUB/kb/business/index.html"; then
   ok "页脚组件已渲染（首页 + 内页）"
 else
   bad "页脚组件缺失"
@@ -40,9 +40,9 @@ else
 fi
 
 echo "== 内容渲染 =="
-grep -q 'data-callout="tip"' "$PUB/business/index.html" && ok "callout 渲染正常" || bad "callout 未渲染"
+grep -q 'data-callout="tip"' "$PUB/kb/business/index.html" && ok "callout 渲染正常" || bad "callout 未渲染"
 [ -f "$PUB/about/welcome.html" ] && ok "关于/开站记存在" || bad "about/welcome 缺失"
-grep -q 'yyj-crumbs' "$PUB/business/index.html" && ok "面包屑已渲染" || bad "面包屑缺失"
+grep -q 'yyj-crumbs' "$PUB/kb/business/index.html" && ok "面包屑已渲染" || bad "面包屑缺失"
 grep -q 'yyj-footer-brand' "$PUB/index.html" && ok "页脚品牌区存在" || bad "页脚品牌区缺失"
 
 echo "== 索引 =="

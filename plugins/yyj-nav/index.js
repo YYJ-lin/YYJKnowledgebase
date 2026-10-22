@@ -130,12 +130,15 @@ function buildTree(allFiles, currentSlug) {
     .map(([key, items]) => {
       const sorted = sortItems(items)
       const indexItem = sorted.find((i) => i.isIndex) ?? null
+      // 只把「本组的 index」当标题，嵌套的子分类首页（如 kb/business）保留为链接
+      const ownSlug = key === "__pages" ? null : `${key}/index`
+      const own = ownSlug ? (sorted.find((i) => i.slug === ownSlug) ?? null) : null
       return {
         key,
-        title: key === "__pages" ? "页面" : (indexItem?.title ?? key),
-        indexItem,
+        title: key === "__pages" ? "页面" : (own?.title ?? key),
+        indexItem: own,
         rank: key === "__pages" ? 99 : (SECTION_RANK[key] ?? 90),
-        items: sorted.filter((i) => !i.isIndex),
+        items: sorted.filter((i) => i.slug !== ownSlug),
         count: sorted.length,
       }
     })

@@ -1,7 +1,7 @@
 ---
 title: 行业知识
 description: 行业术语、政策与案例的整理
-parent: kb
+aliases: ["industry/index"]
 ---
 
 把行业里的常识、术语和变化，整理成不用每次都重新查一遍的东西。

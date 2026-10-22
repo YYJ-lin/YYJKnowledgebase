@@ -12,9 +12,10 @@
 content/           Obsidian vault，所有内容
 ├── index.md       首页（Hero + 三卡）
 ├── tech/          技术手记
-├── kb.md          知识库总入口
-├── business/      知识库 › 业务分享
-├── industry/      知识库 › 行业知识
+├── kb/            知识库（含子分类）
+│   ├── index.md
+│   ├── business/  知识库 › 业务分享
+│   └── industry/  知识库 › 行业知识
 ├── tools/         资源与工具
 ├── about/         关于 / 联系 / 隐私 / 许可 / 写作指南 / 开站记
 └── attachments/   图片附件

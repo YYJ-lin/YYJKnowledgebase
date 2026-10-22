@@ -155,7 +155,7 @@ plugins:
           if (segs[0] === "tags") return false;
           // 首页/知识库页显示完整目录，其余页面只看当前分类
           if (segs.length === 0) return true;
-          if (!section || section === "kb") return true;
+          if (!section) return true;
           return segs[0] === section;
         }
     layout:

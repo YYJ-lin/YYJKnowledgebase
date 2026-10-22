@@ -3,11 +3,13 @@ import { h } from "preact"
 /**
  * 云屿集面包屑。
  *
- * 层级按「分类 index.md 的 frontmatter」推出来，和顶栏用的是同一套元数据：
- *   nav: true 的分类 = 顶级栏目（技术手记 / 资源与工具 / 关于…）
- *   没有 nav 的分类（业务分享、行业知识）= 挂在「业务与行业」(/kb) 下
- *
- * 结果：首页 › 技术手记 › 文章  /  首页 › 业务与行业 › 业务分享 › 文章
+ * 按 slug 的祖先链自动拼：每一级只要存在 `<前缀>/index.md` 就成为一个面包屑，
+ * 标题取那个 index 的 title。所以：
+ *   kb/business/index  → 首页 › 知识库 › 业务分享
+ *   kb/business/a      → 首页 › 知识库 › 业务分享 › A
+ *   tech/a             → 首页 › 技术手记 › A
+ *   about/writing-guide→ 首页 › 关于云屿集 › 写作指南
+ *   kb                 → 首页 › 知识库
  */
 
 function siteRoot(cfg) {
@@ -19,51 +21,30 @@ function siteRoot(cfg) {
   }
 }
 
-function toHref(slug) {
-  return slug.endsWith("/index") ? `/${slug.slice(0, -"/index".length)}/` : `/${slug}`
-}
-
-function Crumbs(opts) {
+function Crumbs() {
   return ({ cfg, fileData, allFiles }) => {
     const slug = fileData?.slug ?? ""
     if (!slug || slug === "index") return null
 
     const root = siteRoot(cfg)
+    const bySlug = new Map((allFiles ?? []).map((f) => [f.slug, f]))
     const parts = slug.split("/")
-    const section = parts.length > 1 ? parts[0] : null
+    const isIndex = parts[parts.length - 1] === "index"
+    const base = isIndex ? parts.slice(0, -1) : parts
+
     const items = [{ label: "首页", href: `${root}/` }]
 
-    const sectionIndex = section
-      ? (allFiles ?? []).find((f) => f.slug === `${section}/index`)
-      : null
-    const sectionTitle = sectionIndex?.frontmatter?.title ?? section
-    const sectionIsTopLevel = sectionIndex?.frontmatter?.nav === true
+    for (let i = 1; i <= base.length; i++) {
+      const prefix = base.slice(0, i).join("/")
+      const indexFile = bySlug.get(`${prefix}/index`)
+      if (!indexFile) continue
+      const label = indexFile.frontmatter?.title ?? prefix
+      const current = isIndex && i === base.length
+      items.push(current ? { label, current: true } : { label, href: `${root}/${prefix}/` })
+    }
 
-    if (!section) {
-      // 顶层单页（/kb、/services 等）
-      items.push({ label: fileData?.frontmatter?.title ?? slug, current: true })
-    } else {
-      // 父级：分类 index.md 里写 parent: kb，就能挂到 /kb 下
-      const parentSlug = sectionIndex?.frontmatter?.parent
-        ? String(sectionIndex.frontmatter.parent).replace(/^\//, "")
-        : null
-      if (!sectionIsTopLevel && parentSlug) {
-        const parentFile = (allFiles ?? []).find((f) => f.slug === parentSlug)
-        items.push({
-          label: parentFile?.frontmatter?.title ?? parentSlug,
-          href: `${root}${toHref(parentSlug)}`,
-        })
-      }
-      const isSectionIndex = slug === `${section}/index`
-      if (isSectionIndex) {
-        items.push({ label: sectionTitle, current: true })
-      } else {
-        items.push({ label: sectionTitle, href: `${root}${toHref(`${section}/index`)}` })
-        items.push({
-          label: fileData?.frontmatter?.title ?? parts[parts.length - 1],
-          current: true,
-        })
-      }
+    if (!isIndex) {
+      items.push({ label: fileData?.frontmatter?.title ?? parts[parts.length - 1], current: true })
     }
 
     const children = []
