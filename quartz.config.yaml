@@ -131,6 +131,11 @@ plugins:
     enabled: true
   - source: "@quartz-community/tag-page"
     enabled: true
+  - source: "./plugins/yyj-switch"
+    enabled: true
+    layout:
+      position: left
+      priority: 5
   - source: "@quartz-community/explorer"
     enabled: true
     options:

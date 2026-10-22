@@ -1,0 +1,30 @@
+{
+  "name": "@yyj/switch",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "侧栏顶部的分类切换器（技术手记 / 知识库 / 资源与工具）",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./components": "./index.js"
+  },
+  "quartz": {
+    "name": "yyj-switch",
+    "displayName": "分类切换器",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 8,
+    "defaultEnabled": true,
+    "components": {
+      "Switch": {
+        "displayName": "分类切换器",
+        "defaultPosition": "left",
+        "defaultPriority": 5
+      }
+    },
+    "optionSchema": {}
+  }
+}

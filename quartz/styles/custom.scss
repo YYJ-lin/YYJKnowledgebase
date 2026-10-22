@@ -1498,3 +1498,134 @@ footer .yyj-qr-panel {
     height: 260px;
   }
 }
+
+// ---------- 侧栏：分类切换器 + 目录树改版 ----------
+.yyj-switch {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 3px;
+  margin-bottom: 14px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--lightgray);
+}
+
+.yyj-switch-item {
+  padding: 6px 2px;
+  border-radius: 8px;
+  color: var(--yyj-muted);
+  font-size: 0.82rem;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition:
+    background-color 140ms var(--yyj-ease-out),
+    color 140ms var(--yyj-ease-out);
+}
+
+.yyj-switch-item:hover {
+  color: var(--dark);
+}
+
+.yyj-switch-item.is-active {
+  background: var(--light);
+  color: var(--dark);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+// 桌面左栏：更大的行高、hover 底色、当前项竖条
+.sidebar.left {
+  padding-top: 2.5rem;
+}
+
+.sidebar.left .title-button.explorer-toggle {
+  display: none;
+}
+
+.explorer .explorer-content {
+  margin-top: 0;
+}
+
+.explorer-ul > li > div > a,
+.explorer-ul .folder-button {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--darkgray);
+  font-size: 0.93rem;
+  text-decoration: none;
+}
+
+.explorer-ul .folder-button .folder-title {
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.explorer .folder-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  transition: background-color 140ms var(--yyj-ease-out);
+}
+
+.explorer .folder-container:hover,
+.explorer-ul > li > div > a:hover {
+  background: color-mix(in srgb, var(--lightgray) 80%, transparent);
+}
+
+.explorer .folder-icon {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--yyj-muted);
+  transition: transform 160ms var(--yyj-ease-out);
+}
+
+// 展开时箭头转 90°
+.explorer .folder-container:has(+ .folder-outer.open) .folder-icon {
+  transform: rotate(90deg);
+}
+
+// 子级缩进 + 引导线
+.explorer .content.tree-item-children {
+  margin-left: 20px;
+  padding-left: 6px;
+  border-left: 1px solid var(--yyj-line);
+}
+
+// 当前页
+.explorer-ul a.is-current {
+  color: var(--yyj-brand);
+  font-weight: 500;
+}
+
+.explorer .folder-container.is-current-row {
+  background: var(--yyj-brand-soft);
+  box-shadow: inset 2px 0 0 var(--yyj-brand);
+}
+
+.explorer-ul > li > .folder-outer > .content > li > div > a.is-current,
+.explorer-ul > li > div > a.is-current {
+  background: var(--yyj-brand-soft);
+  box-shadow: inset 2px 0 0 var(--yyj-brand);
+}
+
+// 篇数徽标
+.yyj-count {
+  margin-left: auto;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--lightgray);
+  color: var(--yyj-muted);
+  font-size: 0.7rem;
+  line-height: 1.6;
+}
