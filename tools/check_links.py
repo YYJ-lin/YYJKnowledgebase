@@ -16,7 +16,7 @@ if not BASE.endswith("/"):
     BASE += "/"
 
 SEEDS = ["", "kb", "tech/", "tech/index", "tools/", "about/", "about/contact",
-         "about/privacy", "about/license", "about/writing-guide", "kb/", "kb/business/", "kb/industry/"]
+         "about/privacy", "about/license", "kb/", "kb/business/", "kb/industry/"]
 
 
 def fetch(url):
