@@ -1672,7 +1672,7 @@ footer .yyj-qr-panel {
 .toc-content {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1728,6 +1728,48 @@ footer .yyj-qr-panel {
 }
 
 .toc-content li > a.in-view {
+  background: var(--yyj-brand-soft);
+  color: var(--yyj-brand);
+  font-weight: 500;
+  box-shadow: inset 2px 0 0 var(--yyj-brand);
+}
+
+// 行与行之间留一点缝，高亮底色不要上下贴死
+.explorer-ul,
+.explorer .content.tree-item-children {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.explorer-ul > li,
+.explorer .content.tree-item-children > li {
+  margin: 0;
+}
+
+// 文章项（leaf）：和文件夹行同一套尺寸
+.explorer-ul a.nav-file-title {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--darkgray);
+  font-size: 0.93rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition:
+    background-color 140ms var(--yyj-ease-out),
+    color 140ms var(--yyj-ease-out);
+}
+
+.explorer-ul a.nav-file-title:hover {
+  background: color-mix(in srgb, var(--lightgray) 80%, transparent);
+  color: var(--dark);
+}
+
+.explorer-ul a.nav-file-title.is-active,
+.explorer-ul a.nav-file-title.is-current {
   background: var(--yyj-brand-soft);
   color: var(--yyj-brand);
   font-weight: 500;
