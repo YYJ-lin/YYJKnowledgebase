@@ -1672,7 +1672,7 @@ footer .yyj-qr-panel {
 .toc-content {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1690,11 +1690,12 @@ footer .yyj-qr-panel {
 .toc-content li > a {
   display: flex;
   align-items: center;
-  min-height: 30px;
-  padding: 2px 8px;
+  min-height: 32px;
+  padding: 0 8px;
   border-radius: 8px;
   color: var(--darkgray);
-  font-size: 0.86rem;
+  font-size: 0.93rem;
+  font-weight: 400;
   line-height: 1.4;
   text-decoration: none;
   transition:
@@ -1702,15 +1703,22 @@ footer .yyj-qr-panel {
     color 140ms var(--yyj-ease-out);
 }
 
+.toc-content li.depth-0 > a {
+  font-weight: 500;
+  color: var(--dark);
+}
+
 .toc-content li.depth-1 > a {
   padding-left: 18px;
-  font-size: 0.82rem;
-  color: var(--yyj-muted);
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--darkgray);
 }
 
 .toc-content li.depth-2 > a {
   padding-left: 30px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 400;
   color: var(--yyj-muted);
 }
 
