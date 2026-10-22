@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
   pageTitle: 云屿集
-  pageTitleSuffix: " · 技术手记与业务笔记"
+  pageTitleSuffix: " · 项目记录与技术教程"
   enableSPA: true
   enablePopovers: true
   analytics:

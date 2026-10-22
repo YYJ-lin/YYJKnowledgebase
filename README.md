@@ -12,10 +12,12 @@
 content/           Obsidian vault，所有内容
 ├── index.md       首页（Hero + 三卡）
 ├── tech/          技术手记
-├── kb/            知识库（含子分类）
+├── kb/            知识库（教程与文档）
 │   ├── index.md
-│   ├── business/  知识库 › 业务分享
-│   └── industry/  知识库 › 行业知识
+│   ├── erpnext/   ERPNext 教程
+│   ├── wordpress/ WordPress 教程
+│   ├── apps/      应用介绍与使用
+│   └── industry/  行业常识
 ├── tools/         资源与工具
 ├── about/         关于 / 联系 / 隐私 / 许可 / 写作指南 / 开站记
 └── attachments/   图片附件
