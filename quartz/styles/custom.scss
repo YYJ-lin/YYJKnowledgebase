@@ -1765,3 +1765,49 @@ footer .yyj-qr-panel {
   font-weight: 500;
   box-shadow: inset 2px 0 0 var(--yyj-brand);
 }
+
+// ---------- 相关文章（自动生成） ----------
+.yyj-related {
+  margin-top: 2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--yyj-line);
+}
+
+.yyj-related-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--yyj-muted);
+}
+
+.yyj-related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yyj-related-list > li {
+  margin: 0;
+}
+
+.yyj-related-list a {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--yyj-line);
+  border-radius: 999px;
+  color: var(--darkgray);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition:
+    border-color 140ms var(--yyj-ease-out),
+    color 140ms var(--yyj-ease-out);
+}
+
+.yyj-related-list a:hover {
+  border-color: var(--yyj-brand);
+  color: var(--yyj-brand);
+}

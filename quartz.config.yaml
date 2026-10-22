@@ -205,10 +205,15 @@ plugins:
       position: beforeBody
       priority: 20
   - source: "@quartz-community/tag-list"
-    enabled: false
+    enabled: true
     layout:
       position: beforeBody
       priority: 30
+  - source: "./plugins/yyj-related"
+    enabled: true
+    layout:
+      position: afterBody
+      priority: 40
   - source: "./plugins/yyj-nav"
     enabled: true
     options:
