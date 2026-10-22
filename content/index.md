@@ -1,12 +1,12 @@
 ---
 title: 云屿集
-description: 技术手记与业务笔记 · 装过什么、踩了哪些坑、最后的配置长什么样
+description: 记录正在做的项目和踩过的坑，整理成能照着做的教程
 ---
 
 <div class="hero">
   <p class="hero-overline">YUNYU JI · 项目记录与技术教程</p>
   <h1 class="hero-title">云屿集</h1>
-  <p class="hero-sub">项目记录与技术教程</p>
+  <p class="hero-sub">记录正在做的项目和踩过的坑，整理成能照着做的教程。</p>
   <div class="hero-actions">
     <button class="hero-search" type="button" aria-label="搜索" onclick="document.querySelector('button.search-button')?.click(); (function(){var n=0;var t=setInterval(function(){var i=document.querySelector('.search-container.active input');if(i&&i.getBoundingClientRect().width>10){i.focus();clearInterval(t);}if(++n>60)clearInterval(t);},25);})()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
