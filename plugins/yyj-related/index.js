@@ -80,7 +80,11 @@ export function Related(opts) {
             { key: file.slug },
             h(
               "a",
-              { href: `${root}${toHref(file.slug)}`, class: "internal" },
+              {
+                href: `${root}${toHref(file.slug)}`,
+                class: "internal internal-link",
+                "data-slug": file.slug,
+              },
               file.frontmatter?.title ?? file.slug,
             ),
           ),
