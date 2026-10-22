@@ -169,18 +169,7 @@ plugins:
       condition: not-index
   - source: "@quartz-community/graph"
     enabled: true
-    options:
-      localGraph:
-        depth: 2
-        scale: 1.15
-        fontSize: 13
-        linkDistance: 26
-        repelForce: 12
-        opacityScale: 1
-      globalGraph:
-        depth: -1
-        scale: 1.1
-        fontSize: 14
+    options: {}
     layout:
       position: right
       priority: 40
